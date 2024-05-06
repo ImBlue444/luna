@@ -91,7 +91,7 @@ const OrdersTable = (props: Props) => {
                                 <td>{e.customer_name}</td>
                                 <td>{e.order_date}</td>
                                 <td>{formattaNumero(e.total_price)}</td>
-                                <td><Link href={"/" + e.order_id}>{statusHandler(e.status)}</Link></td>
+                                <td><Link href={"/orders/" + e.order_id}>{statusHandler(e.status)}</Link></td>
                             </tr>
                         ))}
                     </tbody>

@@ -1,9 +1,9 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Hero from '@/components/Hero/Hero'
+import Hero from '@/components/hero/Hero'
 import { useParams } from 'next/navigation'
-import Steps from '@/components/Hero/Steps'
+import Steps from '@/components/hero/Steps'
 import axios from 'axios'
 import OrderTable from '@/components/tables/OrderTable'
 type Props = {}
@@ -52,8 +52,9 @@ const page = (props: Props) => {
             <div className='flex justify-center items-center flex-col'>
                 <Steps status={order?.status || "loading"} />
                 <div className='my-10 flex gap-4'>
-                    <button className="btn btn-error rounded-lg">Indietro</button>
-                    <button className="btn btn-info rounded-lg">Avanti</button>
+                    <button className="btn btn-warning rounded-lg">Indietro</button>
+                    <button className="btn btn-error rounded-lg">Annulla</button>
+                    <button className="btn btn-success rounded-lg">Avanti</button>
                 </div>
             </div>
             <span className=' '>
