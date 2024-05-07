@@ -35,6 +35,18 @@ const OrderTable = (props: Props) => {
                         <td>{props.order_date}</td>
                         <td>Blue</td>
                     </tr>
+                    <tr>
+                        <th></th>
+                        <td>Robby Helling</td>
+                        <td>{props.order_date}</td>
+                        <td>Blue</td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td>Shay Bowhay</td>
+                        <td>{props.order_date}</td>
+                        <td>Blue</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
