@@ -3,7 +3,6 @@ import React, { useState, useEffect, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Image from 'next/image';
 import logo from '../../../logo.jpg'
 
 
@@ -34,13 +33,6 @@ const Login = (props: Props) => {
                 </div>
                 <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                     <form className="card-body" onSubmit={handleSubmit}>
-                        <Image
-                            className=' rounded-xl w-fit mx-auto'
-                            src={logo}
-                            width={150}
-                            height={150}
-                            alt="Picture of the author"
-                        />
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text font-semibold">Nome</span>
