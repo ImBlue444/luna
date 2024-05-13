@@ -1,7 +1,6 @@
 'use client'
 import React from 'react'
 import Link from 'next/link'
-import logo from '../../../logo.jpg'
 import { usePathname } from 'next/navigation'
 import Hero from '../hero/Hero'
 
