@@ -29,7 +29,7 @@ const Sidebar = (props: Props) => {
                                 <div className="flex-none hidden lg:block">
                                     <ul className="menu menu-horizontal">
                                         {/* Navbar menu content here */}
-                                        <li><Link href={"/orders"}>Ordini</Link></li>
+                                        <li><Link href={"/orders"}>Supporto</Link></li>
                                         <li><Link href={"/"}>Esci</Link></li>
                                     </ul>
                                 </div>
@@ -39,10 +39,9 @@ const Sidebar = (props: Props) => {
                     {pathName === "/" ? "" :
                         <div className="drawer-side">
                             <label htmlFor="my-drawer-3" aria-label="close sidebar" className="drawer-overlay"></label>
-
                             <ul className="menu p-4 w-80 min-h-full bg-base-200">
                                 {/* Sidebar content here */}
-                                <li><Link href={"/orders"}>Ordini</Link></li>
+                                <li><Link href={"/orders"}>Supporto</Link></li>
                                 <li><Link href={"/"}>Esci</Link></li>
                             </ul>
                         </div>

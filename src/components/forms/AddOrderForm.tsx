@@ -165,8 +165,7 @@ const AddOrderForm = (props: Props) => {
                         </select>
                     </label>
 
-
-                    <table className="table md:table-md table-xs md:text-xl">
+                    <table className="hidden md:table md:table-md table-xs md:text-xl">
                         <thead>
                             <tr>
                                 <th><b>Attività</b></th>
@@ -285,6 +284,219 @@ const AddOrderForm = (props: Props) => {
                             </tr>
                         </tbody>
                     </table>
+
+                    <div className=' md:hidden flex flex-col gap-4'>
+                        <div className='border'>
+                            <h2 className='text-center text-lg font-bold'>Ricezione alluminio</h2>
+                            <table className=' table table-auto'>
+                                <tbody>
+                                    <tr>
+                                        <td>Scadenza</td>
+                                        <td>
+                                            <ReactDatePicker
+                                                calendarClassName='w-30'
+                                                minDate={new Date()}
+                                                selected={ricAllDate}
+                                                onChange={(date: Date) => setRicAllDate(date)} />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Responsabile</td>
+                                        <td>
+                                            <select value={RAres} onChange={e => setRAres(e.target.value)} required className="select select-xs md:select-md select-bordered">
+                                                <option disabled>Seleziona responsabile</option>
+                                                {workers.map((worker) => (<option key={worker.value} value={worker.value}>{worker.value}</option>))}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className='border'>
+                            <h2 className='text-center text-lg font-bold'>Ricezione vetri</h2>
+                            <table className=' table table-auto'>
+                                <tbody>
+                                    <tr>
+                                        <td>Scadenza</td>
+                                        <td>
+                                            <ReactDatePicker minDate={new Date()} selected={ricVetDate} onChange={(date: Date) => setVetAllDate(date)} />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Responsabile</td>
+                                        <td>
+                                            <select value={RVres} onChange={e => setRVres(e.target.value)} required className="select select-xs md:select-md select-bordered">
+                                                <option disabled>Seleziona responsabile</option>
+                                                {workers.map((worker) => (<option key={worker.value} value={worker.value}>{worker.value}</option>))}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className='border'>
+                            <h2 className='text-center text-lg font-bold'>Taglio</h2>
+                            <table className=' table table-auto'>
+                                <tbody>
+                                    <tr>
+                                        <td>Scadenza</td>
+                                        <td>
+                                            <ReactDatePicker minDate={new Date()} selected={taglioDate} onChange={(date: Date) => setTaglioDate(date)} />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Responsabile</td>
+                                        <td>
+                                            <select value={TAGRes} onChange={e => setTAGRes(e.target.value)} required className="select select-xs md:select-md select-bordered">
+                                                <option disabled>Seleziona responsabile</option>
+                                                {workers.map((worker) => (<option key={worker.value} value={worker.value}>{worker.value}</option>))}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className='border'>
+                            <h2 className='text-center text-lg font-bold'>Lavorazione</h2>
+                            <table className=' table table-auto'>
+                                <tbody>
+                                    <tr>
+                                        <td>Scadenza</td>
+                                        <td>
+                                            <ReactDatePicker minDate={new Date()} selected={lavorazioneDate} onChange={(date: Date) => setLavorazioneDate(date)} />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Responsabile</td>
+                                        <td>
+                                            <select value={LAVres} onChange={e => setLAVres(e.target.value)} required className="select select-xs md:select-md select-bordered">
+                                                <option disabled>Seleziona responsabile</option>
+                                                {workers.map((worker) => (<option key={worker.value} value={worker.value}>{worker.value}</option>))}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className='border'>
+                            <h2 className='text-center text-lg font-bold'>Assemblaggio</h2>
+                            <table className=' table table-auto'>
+                                <tbody>
+                                    <tr>
+                                        <td>Scadenza</td>
+                                        <td>
+                                            <ReactDatePicker minDate={new Date()} selected={assemblaggioDate} onChange={(date: Date) => setAssemblaggioDate(date)} />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Responsabile</td>
+                                        <td>
+                                            <select value={ASSres} onChange={e => setASSres(e.target.value)} required className="select select-xs md:select-md select-bordered">
+                                                <option disabled>Seleziona responsabile</option>
+                                                {workers.map((worker) => (<option key={worker.value} value={worker.value}>{worker.value}</option>))}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className='border'>
+                            <h2 className='text-center text-lg font-bold'>Installazione vetri</h2>
+                            <table className=' table table-auto'>
+                                <tbody>
+                                    <tr>
+                                        <td>Scadenza</td>
+                                        <td>
+                                            <ReactDatePicker minDate={new Date()} selected={instVetri} onChange={(date: Date) => setInstVetriDate(date)} />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Responsabile</td>
+                                        <td>
+                                            <select value={IVres} onChange={e => setIVres(e.target.value)} required className="select select-xs md:select-md select-bordered">
+                                                <option disabled>Seleziona responsabile</option>
+                                                {workers.map((worker) => (<option key={worker.value} value={worker.value}>{worker.value}</option>))}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className='border'>
+                            <h2 className='text-center text-lg font-bold'>Imballaggio</h2>
+                            <table className=' table table-auto'>
+                                <tbody>
+                                    <tr>
+                                        <td>Scadenza</td>
+                                        <td>
+                                            <ReactDatePicker minDate={new Date()} selected={imballaggioDate} onChange={(date: Date) => setImballaggioDate(date)} />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Responsabile</td>
+                                        <td>
+                                            <select value={IMres} onChange={e => setIMres(e.target.value)} required className="select select-xs md:select-md select-bordered">
+                                                <option disabled>Seleziona responsabile</option>
+                                                {workers.map((worker) => (<option key={worker.value} value={worker.value}>{worker.value}</option>))}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className='border'>
+                            <h2 className='text-center text-lg font-bold'>Trasporto</h2>
+                            <table className=' table table-auto'>
+                                <tbody>
+                                    <tr>
+                                        <td>Scadenza</td>
+                                        <td>
+                                            <ReactDatePicker minDate={new Date()} selected={transportDate} onChange={(date: Date) => setTransportDate(date)} />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Responsabile</td>
+                                        <td>
+                                            <select value={TRAres} onChange={e => setTRAres(e.target.value)} required className="select select-xs md:select-md select-bordered">
+                                                <option disabled>Seleziona responsabile</option>
+                                                {workers.map((worker) => (<option key={worker.value} value={worker.value}>{worker.value}</option>))}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className='border'>
+                            <h2 className='text-center text-lg font-bold'>Consegna/Inst.</h2>
+                            <table className=' table table-auto'>
+                                <tbody>
+                                    <tr>
+                                        <td>Scadenza</td>
+                                        <td>
+                                            <ReactDatePicker minDate={new Date()} selected={delivInstDate} onChange={(date: Date) => setDelivInstDate(date)} />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Responsabile</td>
+                                        <td>
+                                            <select value={DELres} onChange={e => setDELres(e.target.value)} required className="select select-xs md:select-md select-bordered">
+                                                <option disabled>Seleziona responsabile</option>
+                                                {workers.map((worker) => (<option key={worker.value} value={worker.value}>{worker.value}</option>))}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div className='flex justify-center md:justify-end my-4 mr-10 gap-4'>
                     <button className='btn btn-warning rounded-xl'>Annulla</button>

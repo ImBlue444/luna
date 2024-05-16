@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import { status } from '@/utils/enums/status'
 import { differenceInDays } from "date-fns";
+import { FaPlusCircle } from "react-icons/fa";
 
 
 interface Order {
@@ -80,11 +81,11 @@ const Order = (props: Props) => {
 
     const handleTargetLabel = (days: number) => {
         if (days < 0) {
-            return (<button className='btn btn-error'>Ritardo</button>);
+            return (<button className=' w-full btn btn-error'>Ritardo</button>);
         } else if (days > 0) {
-            return (<button className='btn btn-secondary'>Anticipo</button>);
+            return (<button className=' w-full btn btn-success'>Anticipo</button>);
         } else if (days === 0) {
-            return (<button className='btn btn-info'>OK</button>);
+            return (<button className=' w-full btn btn-info'>OK</button>);
         }
     };
 
@@ -113,7 +114,7 @@ const Order = (props: Props) => {
                 <div className="overflow-x-auto">
                     <table className="table">
                         <thead>
-                            <tr className='border border-black'>
+                            <tr className='border border-black text-lg font-bold '>
                                 <th>Attività</th>
                                 <th>Scadenza</th>
                                 <th>Completato</th>
@@ -137,7 +138,7 @@ const Order = (props: Props) => {
                                 </td>
                                 <td>Timer</td>
                                 <td>{handleTargetLabel(differenceInDays(props.orderData.activity.ricezioneAlluminio.expire, new Date()))}</td>
-                                <td>Note</td>
+                                <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
                             <tr className="hover border border-black">
                                 <td>Ricezione vetri</td>
@@ -152,7 +153,7 @@ const Order = (props: Props) => {
                                 </td>
                                 <td>Timer</td>
                                 <td>{handleTargetLabel(differenceInDays(props.orderData.activity.ricezioneVetri.expire, new Date()))}</td>
-                                <td>Note</td>
+                                <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
                             <tr className='border border-black'>
                                 <td>Taglio</td>
@@ -167,7 +168,7 @@ const Order = (props: Props) => {
                                 </td>
                                 <td>Timer</td>
                                 <td>{handleTargetLabel(differenceInDays(props.orderData.activity.taglio.expire, new Date()))}</td>
-                                <td>Note</td>
+                                <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
                             <tr className='border border-black'>
                                 <td>Lavorazione</td>
@@ -182,7 +183,7 @@ const Order = (props: Props) => {
                                 </td>
                                 <td>Timer</td>
                                 <td>{handleTargetLabel(differenceInDays(props.orderData.activity.lavorazione.expire, new Date()))}</td>
-                                <td>Note</td>
+                                <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
                             <tr className='border border-black'>
                                 <td>Assemblaggio</td>
@@ -197,7 +198,7 @@ const Order = (props: Props) => {
                                 </td>
                                 <td>Timer</td>
                                 <td>{handleTargetLabel(differenceInDays(props.orderData.activity.assemblaggio.expire, new Date()))}</td>
-                                <td>Note</td>
+                                <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
                             <tr className='border border-black'>
                                 <td>Installazione vetri</td>
@@ -212,7 +213,7 @@ const Order = (props: Props) => {
                                 </td>
                                 <td>Timer</td>
                                 <td>{handleTargetLabel(differenceInDays(props.orderData.activity.installazioneVetri.expire, new Date()))}</td>
-                                <td>Note</td>
+                                <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
                             <tr className='border border-black'>
                                 <td>Imballaggio</td>
@@ -227,7 +228,7 @@ const Order = (props: Props) => {
                                 </td>
                                 <td>Timer</td>
                                 <td>{handleTargetLabel(differenceInDays(props.orderData.activity.imballaggio.expire, new Date()))}</td>
-                                <td>Note</td>
+                                <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
                             <tr className='border border-black'>
                                 <td>Trasporto</td>
@@ -242,7 +243,7 @@ const Order = (props: Props) => {
                                 </td>
                                 <td>Timer</td>
                                 <td>{handleTargetLabel(differenceInDays(props.orderData.activity.trasporto.expire, new Date()))}</td>
-                                <td>Note</td>
+                                <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
                             <tr className='border border-black'>
                                 <td>Consegna/Install.</td>
@@ -259,7 +260,7 @@ const Order = (props: Props) => {
                                 <td>
                                     {handleTargetLabel(differenceInDays(props.orderData.activity.consegnaInstallazione.expire, new Date()))}
                                 </td>
-                                <td>Note</td>
+                                <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
                         </tbody>
                     </table>

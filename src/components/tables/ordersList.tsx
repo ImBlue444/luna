@@ -8,9 +8,7 @@ type Props = {};
 
 
 const OrdersList = (props: Props) => {
-
     const [orders, setOrders] = useState([]);
-
     useEffect(() => {
         axios.get('http://localhost:5000/orders')
             .then(function (response) {
@@ -20,12 +18,6 @@ const OrdersList = (props: Props) => {
                 console.log(error);
             })
     }, [])
-    useEffect(() => {
-        console.log(orders)
-
-    }, [orders])
-
-
     return (
         <div className='flex flex-col gap-14'>
             {orders.map((order, index) => <div key={index}><Order orderData={order} /></div>)}
