@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import { status } from '@/utils/enums/status'
 import { differenceInDays } from "date-fns";
 import { FaPlusCircle } from "react-icons/fa";
+import { formatDistanceToNowStrict, formatDistanceToNow, intlFormatDistance } from "date-fns";
+import { it } from 'date-fns/locale';
 
 
 interface Order {
@@ -39,6 +41,9 @@ type Props = {
 }
 
 const Order = (props: Props) => {
+    const optionsLocale = () => {
+        return { locale: it }
+    }
 
     const [RAstat, setRAstat] = useState(props.orderData.activity.ricezioneAlluminio.status);
     const [RVstat, setRVstat] = useState(props.orderData.activity.ricezioneVetri.status);
@@ -125,7 +130,7 @@ const Order = (props: Props) => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr className='border border-black'>
+                            <tr className='hover border border-black'>
                                 <td>Ricezione Alluminio</td>
                                 <td>{new Date(props.orderData.activity.ricezioneAlluminio.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
                                 <td>Completato</td>
@@ -136,7 +141,7 @@ const Order = (props: Props) => {
                                         ))}
                                     </select>
                                 </td>
-                                <td>Timer</td>
+                                <td>{intlFormatDistance(props.orderData.activity.ricezioneAlluminio.expire, new Date(), { "locale": "it" })}</td>
                                 <td>{handleTargetLabel(differenceInDays(props.orderData.activity.ricezioneAlluminio.expire, new Date()))}</td>
                                 <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
@@ -151,11 +156,11 @@ const Order = (props: Props) => {
                                         ))}
                                     </select>
                                 </td>
-                                <td>Timer</td>
+                                <td>{intlFormatDistance(props.orderData.activity.ricezioneVetri.expire, new Date(), { "locale": "it" })}</td>
                                 <td>{handleTargetLabel(differenceInDays(props.orderData.activity.ricezioneVetri.expire, new Date()))}</td>
                                 <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
-                            <tr className='border border-black'>
+                            <tr className='hover border border-black'>
                                 <td>Taglio</td>
                                 <td>{new Date(props.orderData.activity.taglio.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
                                 <td>Completato</td>
@@ -166,11 +171,11 @@ const Order = (props: Props) => {
                                         ))}
                                     </select>
                                 </td>
-                                <td>Timer</td>
+                                <td>{intlFormatDistance(props.orderData.activity.taglio.expire, new Date(), { "locale": "it" })}</td>
                                 <td>{handleTargetLabel(differenceInDays(props.orderData.activity.taglio.expire, new Date()))}</td>
                                 <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
-                            <tr className='border border-black'>
+                            <tr className='hover border border-black'>
                                 <td>Lavorazione</td>
                                 <td>{new Date(props.orderData.activity.lavorazione.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
                                 <td>Completato</td>
@@ -181,11 +186,11 @@ const Order = (props: Props) => {
                                         ))}
                                     </select>
                                 </td>
-                                <td>Timer</td>
+                                <td>{intlFormatDistance(props.orderData.activity.lavorazione.expire, new Date(), { "locale": "it" })}</td>
                                 <td>{handleTargetLabel(differenceInDays(props.orderData.activity.lavorazione.expire, new Date()))}</td>
                                 <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
-                            <tr className='border border-black'>
+                            <tr className='hover border border-black'>
                                 <td>Assemblaggio</td>
                                 <td>{new Date(props.orderData.activity.assemblaggio.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
                                 <td>Completato</td>
@@ -196,11 +201,11 @@ const Order = (props: Props) => {
                                         ))}
                                     </select>
                                 </td>
-                                <td>Timer</td>
+                                <td>{intlFormatDistance(props.orderData.activity.assemblaggio.expire, new Date(), { "locale": "it" })}</td>
                                 <td>{handleTargetLabel(differenceInDays(props.orderData.activity.assemblaggio.expire, new Date()))}</td>
                                 <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
-                            <tr className='border border-black'>
+                            <tr className='hover border border-black'>
                                 <td>Installazione vetri</td>
                                 <td>{new Date(props.orderData.activity.installazioneVetri.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
                                 <td>Completato</td>
@@ -211,11 +216,11 @@ const Order = (props: Props) => {
                                         ))}
                                     </select>
                                 </td>
-                                <td>Timer</td>
+                                <td>{intlFormatDistance(props.orderData.activity.installazioneVetri.expire, new Date(), { "locale": "it" })}</td>
                                 <td>{handleTargetLabel(differenceInDays(props.orderData.activity.installazioneVetri.expire, new Date()))}</td>
                                 <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
-                            <tr className='border border-black'>
+                            <tr className='hover border border-black'>
                                 <td>Imballaggio</td>
                                 <td>{new Date(props.orderData.activity.imballaggio.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
                                 <td>Completato</td>
@@ -226,11 +231,11 @@ const Order = (props: Props) => {
                                         ))}
                                     </select>
                                 </td>
-                                <td>Timer</td>
+                                <td>{intlFormatDistance(props.orderData.activity.imballaggio.expire, new Date(), { "locale": "it" })}</td>
                                 <td>{handleTargetLabel(differenceInDays(props.orderData.activity.imballaggio.expire, new Date()))}</td>
                                 <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
-                            <tr className='border border-black'>
+                            <tr className='hover border border-black'>
                                 <td>Trasporto</td>
                                 <td>{new Date(props.orderData.activity.trasporto.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
                                 <td>Completato</td>
@@ -241,11 +246,11 @@ const Order = (props: Props) => {
                                         ))}
                                     </select>
                                 </td>
-                                <td>Timer</td>
+                                <td>{intlFormatDistance(props.orderData.activity.trasporto.expire, new Date(), { "locale": "it" })}</td>
                                 <td>{handleTargetLabel(differenceInDays(props.orderData.activity.trasporto.expire, new Date()))}</td>
                                 <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
-                            <tr className='border border-black'>
+                            <tr className='hover border border-black'>
                                 <td>Consegna/Install.</td>
                                 <td>{new Date(props.orderData.activity.consegnaInstallazione.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
                                 <td>Completato</td>
@@ -256,7 +261,7 @@ const Order = (props: Props) => {
                                         ))}
                                     </select>
                                 </td>
-                                <td>Timer</td>
+                                <td>{intlFormatDistance(props.orderData.activity.consegnaInstallazione.expire, new Date(), { "locale": "it" })}</td>
                                 <td>
                                     {handleTargetLabel(differenceInDays(props.orderData.activity.consegnaInstallazione.expire, new Date()))}
                                 </td>

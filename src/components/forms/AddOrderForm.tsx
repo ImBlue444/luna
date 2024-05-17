@@ -1,7 +1,9 @@
 'use client'
-import React, { useState, useEffect, FormEvent } from 'react'
+import React, { useState, FormEvent } from 'react'
 import ReactDatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { workers } from '@/utils/enums/workers';
 import axios from 'axios';
 
@@ -22,7 +24,7 @@ const AddOrderForm = (props: Props) => {
     // Order states
     const [orderName, setOrderName] = useState("");
     const [materialShelf, setMaterialShelf] = useState("");
-    const [urgency, seturgency] = useState("");
+    const [urgency, setUrgency] = useState("");
     const [priority, setPriority] = useState("");
     const [orderManager, setOrderManager] = useState("");
 
@@ -38,18 +40,50 @@ const AddOrderForm = (props: Props) => {
     const [TRAres, setTRAres] = useState("");
     const [DELres, setDELres] = useState("");
 
+    const notifySuccess = (text: string) => toast.success(text);
+    const notifyError = (text: string) => toast.error(text);
+
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         axios.post('http://localhost:5000/orders', orderData)
             .then(function (response) {
-                console.log(response);
+                if (response.status === 201) {
+                    notifySuccess("Commessa inserita con successo!")
+                    resetFields();
+                } else notifyError("Qualcosa è andato storto!")
             })
             .catch(function (error) {
                 console.log(error);
             });
-
     };
+
+    const resetFields = () => {
+        setRicAllDate(new Date());
+        setVetAllDate(new Date());
+        setTaglioDate(new Date());
+        setLavorazioneDate(new Date());
+        setAssemblaggioDate(new Date());
+        setInstVetriDate(new Date());
+        setImballaggioDate(new Date());
+        setTransportDate(new Date());
+        setDelivInstDate(new Date());
+        setOrderName("");
+        setMaterialShelf("");
+        setUrgency("");
+        setPriority("");
+        setOrderManager("");
+        setRAres("");
+        setRVres("");
+        setTAGRes("");
+        setLAVres("");
+        setASSres("");
+        setIVres("");
+        setIMres("");
+        setTRAres("");
+        setDELres("");
+    }
+
     const orderData = {
         orderName: orderName,
         materialShelf: materialShelf,
@@ -99,6 +133,7 @@ const AddOrderForm = (props: Props) => {
 
     return (
         <div>
+            <ToastContainer limit={1} />
             <div className='flex justify-center'>
                 <h2 className=' my-8 text-4xl text-center text-pretty font-semibold'>Dati commessa</h2>
             </div>
@@ -116,7 +151,7 @@ const AddOrderForm = (props: Props) => {
                         <div className="label">
                             <span className="label-text font-semibold">Priorità</span>
                         </div>
-                        <select value={urgency} onChange={e => seturgency(e.target.value)} required className="select select-bordered">
+                        <select value={urgency} onChange={e => setUrgency(e.target.value)} required className="select select-bordered">
                             <option disabled>Seleziona priorità</option>
                             <option>Bassa</option>
                             <option>Media</option>
@@ -499,7 +534,7 @@ const AddOrderForm = (props: Props) => {
                     </div>
                 </div>
                 <div className='flex justify-center md:justify-end my-4 mr-10 gap-4'>
-                    <button className='btn btn-warning rounded-xl'>Annulla</button>
+                    <p onClick={() => resetFields()} className='btn btn-warning rounded-xl'>Annulla</p>
                     <button type='submit' className='btn btn-info rounded-xl'>Aggiungi</button>
                 </div>
             </form>

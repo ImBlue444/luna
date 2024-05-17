@@ -1,9 +1,10 @@
 'use client'
-import React, { useState, useEffect, FormEvent } from 'react'
+import React, { useState, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import logo from '../../../logo.jpg'
+import logo from '../../../public/logo.webp'
+import Image from 'next/image';
 
 
 type Props = {}
@@ -26,12 +27,8 @@ const Login = (props: Props) => {
         <div className="hero min-h-screen bg-base-200">
             <ToastContainer limit={1} />
             <div className="hero-content flex-col lg:flex-row-reverse">
-                <div className="text-center lg:text-left">
-                    <h1 className="text-5xl font-bold">Benvenuto!</h1>
-                    <h2 className="text-2xl font-bold">Inserisci i tuoi dati per accedere...</h2>
-                    {/* <p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p> */}
-                </div>
                 <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+                    <Image src={logo} alt='logo' />
                     <form className="card-body" onSubmit={handleSubmit}>
                         <div className="form-control">
                             <label className="label">

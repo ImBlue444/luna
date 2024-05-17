@@ -3,6 +3,8 @@ import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Hero from '../hero/Hero'
+import logo from '../../../public/logo.webp'
+import Image from 'next/image'
 
 type Props = {}
 
@@ -22,7 +24,7 @@ const Sidebar = (props: Props) => {
                                 </label>
                             </div>
                             <div className="flex-1 items-center">
-                                <Link href={"/orders"} className="btn btn-ghost text-xl rounded-lg">Luna</Link>
+                                <Link href={"/orders"} className="btn btn-ghost text-xl rounded-lg">Luna <Image src={logo} alt='logo' width={80} /></Link>
 
                             </div>
                             {pathName === "/" ? "" :
