@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { status } from '@/utils/enums/status'
 import { differenceInDays } from "date-fns";
 import { FaPlusCircle } from "react-icons/fa";
-import { formatDistanceToNowStrict, formatDistanceToNow, intlFormatDistance } from "date-fns";
+import { intlFormatDistance } from "date-fns";
 import { it } from 'date-fns/locale';
 
 
@@ -100,7 +100,7 @@ const Order = (props: Props) => {
             <div className='flex flex-col md:flex-row items-center md:justify-between text-center gap-4 mb-8'>
                 <div>
                     <p onClick={() => console.log(differenceInDays(props.orderData.activity.ricezioneAlluminio.expire, new Date()))} className='font-bold'>Commessa</p>
-                    <p className=' text-center text-2xl'>{props.orderData.orderName}</p>
+                    <p className=' text-center text-4xl'>{props.orderData.orderName}</p>
                 </div>
                 <div>
                     <p className='font-bold'>Priorità</p>
@@ -117,9 +117,9 @@ const Order = (props: Props) => {
             </div>
             <div>
                 <div className="overflow-x-auto">
-                    <table className="table">
+                    <table className="table text-center">
                         <thead>
-                            <tr className='border border-black text-lg font-bold '>
+                            <tr className='border border-black text-lg font-bold text-center '>
                                 <th>Attività</th>
                                 <th>Scadenza</th>
                                 <th>Completato</th>
@@ -220,7 +220,7 @@ const Order = (props: Props) => {
                                 <td>{handleTargetLabel(differenceInDays(props.orderData.activity.installazioneVetri.expire, new Date()))}</td>
                                 <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
-                            <tr className='hover border border-black'>
+                            <tr className='hover border border-black text'>
                                 <td>Imballaggio</td>
                                 <td>{new Date(props.orderData.activity.imballaggio.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
                                 <td>Completato</td>
@@ -233,7 +233,7 @@ const Order = (props: Props) => {
                                 </td>
                                 <td>{intlFormatDistance(props.orderData.activity.imballaggio.expire, new Date(), { "locale": "it" })}</td>
                                 <td>{handleTargetLabel(differenceInDays(props.orderData.activity.imballaggio.expire, new Date()))}</td>
-                                <td><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
+                                <td className='text-center'><FaPlusCircle className='cursor-pointer hover:text-gray-400' size={32} /></td>
                             </tr>
                             <tr className='hover border border-black'>
                                 <td>Trasporto</td>
