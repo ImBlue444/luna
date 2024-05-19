@@ -24,10 +24,10 @@ const Login = (props: Props) => {
 
     };
     return (
-        <div className="hero min-h-screen bg-base-200">
+        <div className="hero min-h-screen bg-slate-500">
             <ToastContainer limit={1} />
             <div className="hero-content flex-col lg:flex-row-reverse">
-                <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+                <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-slate-200">
                     <Image src={logo} alt='logo' />
                     <form className="card-body" onSubmit={handleSubmit}>
                         <div className="form-control">

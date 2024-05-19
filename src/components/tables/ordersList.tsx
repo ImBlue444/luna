@@ -19,8 +19,10 @@ const OrdersList = (props: Props) => {
             })
     }, [])
     return (
-        <div className='flex flex-col gap-14'>
-            {orders.map((order, index) => <div key={index}><Order orderData={order} /></div>)}
+        <div>
+            <div className='flex flex-col gap-14'>
+                {orders.map((order, index) => <div key={index}><Order orderData={order} /></div>)}
+            </div>
         </div>
     )
 }
