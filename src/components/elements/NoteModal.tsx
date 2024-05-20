@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect, FormEvent } from 'react'
+import React, { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios'
@@ -19,7 +19,7 @@ const NoteModal = (props: Props) => {
     async function updateActivityNote(orderId: string, activityField: string, newNote: string) {
         try {
             // Costruisci l'URL della richiesta
-            const url = `http://localhost:5000/orders/${orderId}/${activityField}`;
+            const url = `http://localhost:5000/orders/${orderId}/${activityField}/note`;
 
             // Dati da inviare nella richiesta
             const data = { note: newNote };

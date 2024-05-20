@@ -209,7 +209,7 @@ const AddOrderForm = (props: Props) => {
                                 <tr>
                                     <td className="md:text-xl">Ric. alluminio</td>
                                     <td className='md:text-xl'>
-                                        <ReactDatePicker className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={ricAllDate} onChange={(date: Date) => setRicAllDate(date)} />
+                                        <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15} className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={ricAllDate} onChange={(date: Date) => setRicAllDate(date)} />
                                     </td>
                                     <td>
                                         <select value={RAres} onChange={e => setRAres(e.target.value)} required className="select select-xs md:select-md select-bordered">

@@ -15,7 +15,7 @@ const Hero = (props: Props) => {
 
     return (
         <div>
-            <div className=' mt-4'>
+            <div className='mb-2'>
                 {props.userType === "Admin" ?
                     <div role="tablist" className="tabs tabs-lifted md:tabs-lg">
                         <div role="tab" className={`tab cursor-default ${pathName === "/orders" ? "tab-active [--tab-bg:#A9CCE3] font-bold" : ""} md:text-xl`}>

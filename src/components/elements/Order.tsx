@@ -3,8 +3,10 @@ import React, { useState } from 'react'
 import { status } from '@/utils/enums/status'
 import { differenceInDays } from "date-fns";
 import { FaPlusCircle } from "react-icons/fa";
-import { intlFormatDistance } from "date-fns";
+import { intlFormatDistance, isPast } from "date-fns";
 import NoteModal from './NoteModal';
+import { changeStatus } from '@/utils/libs/crud';
+import { activities } from '@/utils/enums/activities';
 interface Order {
     activity: {
         ricezioneAlluminio: Activity;
@@ -50,31 +52,40 @@ const Order = (props: Props) => {
     const [TRAstat, setTRAstat] = useState(props.orderData.activity.trasporto.status);
     const [DELstat, setDELstat] = useState(props.orderData.activity.consegnaInstallazione.status);
 
-    const handleChangeRAstat = (event: { target: { value: React.SetStateAction<string> } }) => {
+    const handleChangeRAstat = (event: { target: any }) => {
+        changeStatus(props.orderData._id, 'ricezioneAlluminio', event.target.value)
         setRAstat(event.target.value);
     };
-    const handleChangeRVstat = (event: { target: { value: React.SetStateAction<string> } }) => {
+    const handleChangeRVstat = (event: { target: any }) => {
+        changeStatus(props.orderData._id, 'ricezioneVetri', event.target.value)
         setRVstat(event.target.value);
     };
-    const handleChangeTAGstat = (event: { target: { value: React.SetStateAction<string> } }) => {
+    const handleChangeTAGstat = (event: { target: any }) => {
+        changeStatus(props.orderData._id, 'taglio', event.target.value)
         setTAGstat(event.target.value);
     };
-    const handleChangeLAVstat = (event: { target: { value: React.SetStateAction<string> } }) => {
+    const handleChangeLAVstat = (event: { target: any }) => {
+        changeStatus(props.orderData._id, 'lavorazione', event.target.value)
         setLAVstat(event.target.value);
     };
-    const handleChangeASSstat = (event: { target: { value: React.SetStateAction<string> } }) => {
+    const handleChangeASSstat = (event: { target: any }) => {
+        changeStatus(props.orderData._id, 'assemblaggio', event.target.value)
         setASSstat(event.target.value);
     };
-    const handleChangeIVstat = (event: { target: { value: React.SetStateAction<string> } }) => {
+    const handleChangeIVstat = (event: { target: any }) => {
+        changeStatus(props.orderData._id, 'installazioneVetri', event.target.value)
         setIVstat(event.target.value);
     };
-    const handleChangeIMstat = (event: { target: { value: React.SetStateAction<string> } }) => {
+    const handleChangeIMstat = (event: { target: any }) => {
+        changeStatus(props.orderData._id, 'imballaggio', event.target.value)
         setIMstat(event.target.value);
     };
-    const handleChangeTRAstat = (event: { target: { value: React.SetStateAction<string> } }) => {
+    const handleChangeTRAstat = (event: { target: any }) => {
+        changeStatus(props.orderData._id, 'trasporto', event.target.value)
         setTRAstat(event.target.value);
     };
-    const handleChangeDELstat = (event: { target: { value: React.SetStateAction<string> } }) => {
+    const handleChangeDELstat = (event: { target: any }) => {
+        changeStatus(props.orderData._id, 'consegnaInstallazione', event.target.value)
         setDELstat(event.target.value);
     };
 
@@ -91,262 +102,262 @@ const Order = (props: Props) => {
 
 
     return (
-        <div className=' card my-4 py-4 px-8 mx-8 rounded-xl md:text-3xl bg-slate-100 border border-black'>
-            <div className='flex flex-col md:flex-row items-center md:justify-between text-center gap-4 mb-8 rounded-xl p-4 border border-black '>
-                <div>
-                    <p onClick={() => console.log(differenceInDays(props.orderData.activity.ricezioneAlluminio.expire, new Date()))} className='font-bold'>Commessa</p>
-                    <p className=' text-center text-2xl'>{props.orderData.orderName}</p>
+        <>
+            <NoteModal id={props.orderData._id} label='Ricezione alluminio' activity='ricezioneAlluminio' />
+            <NoteModal id={props.orderData._id} label='Ricezione vetri' activity='ricezioneVetri' />
+            <NoteModal id={props.orderData._id} label='Taglio' activity='taglio' />
+            <NoteModal id={props.orderData._id} label='Lavorazione' activity='lavorazione' />
+            <NoteModal id={props.orderData._id} label='Assemblaggio' activity='assemblaggio' />
+            <NoteModal id={props.orderData._id} label='Installazione vetri' activity='installazioneVetri' />
+            <NoteModal id={props.orderData._id} label='Imballaggio' activity='imballaggio' />
+            <NoteModal id={props.orderData._id} label='Trasporto' activity='trasporto' />
+            <NoteModal id={props.orderData._id} label='Consegna e/o installazione' activity='consegnaInstallazione' />
+
+            <div className=' card my-4 py-4 px-8 mx-8 rounded-xl md:text-3xl bg-slate-100 border border-black'>
+                <div className='flex flex-col md:flex-row items-center md:justify-between text-center gap-4 mb-8 rounded-xl p-4 border border-black '>
+                    <div>
+                        <p onClick={() => console.log(differenceInDays(props.orderData.activity.ricezioneAlluminio.expire, new Date()))} className='font-bold'>Commessa</p>
+                        <p className=' text-center text-2xl'>{props.orderData.orderName}</p>
+                    </div>
+                    <div>
+                        <p className='font-bold'>Priorità</p>
+                        <p className=' text-center text-2xl'>{props.orderData.urgency}</p>
+                    </div>
+                    <div>
+                        <p className='font-bold'>Cronologico</p>
+                        <p className=' text-center text-2xl'>{props.orderData.priority}</p>
+                    </div>
+                    <div>
+                        <p className='font-bold'>Scaffa materiale</p>
+                        <p className=' text-center text-2xl'>{props.orderData.materialShelf}</p>
+                    </div>
                 </div>
                 <div>
-                    <p className='font-bold'>Priorità</p>
-                    <p className=' text-center text-2xl'>{props.orderData.urgency}</p>
+                    <div className="overflow-x-auto">
+                        <table className="table table-auto text-center text-md md:text-xl">
+                            <thead>
+                                <tr className='text-lg font-bold text-center'>
+                                    <th>Attività</th>
+                                    <th>Scadenza</th>
+                                    <th>Completato</th>
+                                    <th>Stato</th>
+                                    <th>Timer</th>
+                                    <th>Obbiettivo</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+
+                                <tr className='hover:bg-slate-300  border-b-2 border-black'>
+                                    <td>Ricezione Alluminio</td>
+                                    <td>{new Date(props.orderData.activity.ricezioneAlluminio.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
+                                    <td>Data completato</td>
+                                    <td>
+                                        <select className='select select-bordered w-full max-w-xs' value={RAstat} onChange={handleChangeRAstat}>
+                                            {status.map((status, index) => (
+                                                <option key={index} value={status.value}>{status.label}</option>
+                                            ))}
+                                        </select>
+                                    </td>
+                                    <td>{intlFormatDistance(props.orderData.activity.ricezioneAlluminio.expire, new Date(), { "locale": "it" })}</td>
+                                    <td>{handleTargetLabel(differenceInDays(props.orderData.activity.ricezioneAlluminio.expire, new Date()))}</td>
+                                    <td>
+                                        <div className={`${props.orderData.activity.ricezioneAlluminio.note ? 'avatar online placeholder' : "avatar offline placeholder"}`}>
+                                            <FaPlusCircle className='cursor-pointer' onClick={() => { (document.getElementById('modal_ricezioneAlluminio') as HTMLDialogElement | null)?.showModal(); }} size={32} />
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+
+
+
+                                <tr className='hover:bg-slate-300 border-b-2 border-black'>
+                                    <td>Ricezione vetri</td>
+                                    <td>{new Date(props.orderData.activity.ricezioneVetri.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
+                                    <td>Data completato</td>
+                                    <td>
+                                        <select className='select select-bordered w-full max-w-xs' value={RVstat} onChange={handleChangeRVstat}>
+                                            {status.map((status, index) => (
+                                                <option key={index} value={status.value}>{status.label}</option>
+                                            ))}
+                                        </select>
+                                    </td>
+                                    <td>{props ? intlFormatDistance(props.orderData.activity.ricezioneVetri.expire, new Date(), { "locale": "it" }) : ""}</td>
+                                    <td>{handleTargetLabel(differenceInDays(props.orderData.activity.ricezioneVetri.expire, new Date()))}</td>
+                                    <td>
+                                        <div className={`${props.orderData.activity.ricezioneVetri.note ? 'avatar online placeholder' : "avatar offline placeholder"}`}>
+                                            <FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_ricezioneVetri') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+
+
+                                <tr className='hover:bg-slate-300 border-b-2 border-black'>
+                                    <td>Taglio</td>
+                                    <td>{new Date(props.orderData.activity.taglio.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
+                                    <td>Data completato</td>
+                                    <td>
+                                        <select className='select select-bordered w-full max-w-xs' value={TAGstat} onChange={handleChangeTAGstat}>
+                                            {status.map((status, index) => (
+                                                <option key={index} value={status.value}>{status.label}</option>
+                                            ))}
+                                        </select>
+                                    </td>
+                                    <td>{intlFormatDistance(props.orderData.activity.taglio.expire, new Date(), { "locale": "it" })}</td>
+                                    <td>{handleTargetLabel(differenceInDays(props.orderData.activity.taglio.expire, new Date()))}</td>
+                                    <td>
+                                        <div className={`${props.orderData.activity.taglio.note ? 'avatar online placeholder' : "avatar offline placeholder"}`}>
+                                            <FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_taglio') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+
+                                <tr className='hover:bg-slate-300 border-b-2 border-black '>
+                                    <td>Lavorazione</td>
+                                    <td>{new Date(props.orderData.activity.lavorazione.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
+                                    <td>Data completato</td>
+                                    <td>
+                                        <select className='select select-bordered w-full max-w-xs' value={LAVstat} onChange={handleChangeLAVstat}>
+                                            {status.map((status, index) => (
+                                                <option key={index} value={status.value}>{status.label}</option>
+                                            ))}
+                                        </select>
+                                    </td>
+                                    <td>{intlFormatDistance(props.orderData.activity.lavorazione.expire, new Date(), { "locale": "it" })}</td>
+                                    <td>{handleTargetLabel(differenceInDays(props.orderData.activity.lavorazione.expire, new Date()))}</td>
+                                    <td>
+                                        <div className={`${props.orderData.activity.lavorazione.note ? 'avatar online placeholder' : "avatar offline placeholder"}`}>
+                                            <FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_lavorazione') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+
+                                <tr className='hover:bg-slate-300 border-b-2 border-black '>
+                                    <td>Assemblaggio</td>
+                                    <td>{new Date(props.orderData.activity.assemblaggio.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
+                                    <td>Data completato</td>
+                                    <td>
+                                        <select className='select select-bordered w-full max-w-xs' value={ASSstat} onChange={handleChangeASSstat}>
+                                            {status.map((status, index) => (
+                                                <option key={index} value={status.value}>{status.label}</option>
+                                            ))}
+                                        </select>
+                                    </td>
+                                    <td>{intlFormatDistance(props.orderData.activity.assemblaggio.expire, new Date(), { "locale": "it" })}</td>
+                                    <td>{handleTargetLabel(differenceInDays(props.orderData.activity.assemblaggio.expire, new Date()))}</td>
+                                    <td>
+                                        <div className={`${props.orderData.activity.assemblaggio.note ? 'avatar online placeholder' : "avatar offline placeholder"}`}>
+                                            <FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_assemblaggio') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+
+                                <tr className='hover:bg-slate-300 border-b-2 border-black '>
+                                    <td>Installazione vetri</td>
+                                    <td>{new Date(props.orderData.activity.installazioneVetri.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
+                                    <td>Data completato</td>
+                                    <td>
+                                        <select className='select select-bordered w-full max-w-xs' value={IVstat} onChange={handleChangeIVstat}>
+                                            {status.map((status, index) => (
+                                                <option key={index} value={status.value}>{status.label}</option>
+                                            ))}
+                                        </select>
+                                    </td>
+                                    <td>{intlFormatDistance(props.orderData.activity.installazioneVetri.expire, new Date(), { "locale": "it" })}</td>
+                                    <td>{handleTargetLabel(differenceInDays(props.orderData.activity.installazioneVetri.expire, new Date()))}</td>
+                                    <td>
+                                        <div className={`${props.orderData.activity.installazioneVetri.note ? 'avatar online placeholder' : "avatar offline placeholder"}`}>
+                                            <FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_installazioneVetri') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+
+                                <tr className='hover:bg-slate-300 border-b-2 border-black'>
+                                    <td>Imballaggio</td>
+                                    <td>{new Date(props.orderData.activity.imballaggio.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
+                                    <td>Data completato</td>
+                                    <td>
+                                        <select className='select select-bordered w-full max-w-xs' value={IMstat} onChange={handleChangeIMstat}>
+                                            {status.map((status, index) => (
+                                                <option key={index} value={status.value}>{status.label}</option>
+                                            ))}
+                                        </select>
+                                    </td>
+                                    <td>{intlFormatDistance(props.orderData.activity.imballaggio.expire, new Date(), { "locale": "it" })}</td>
+                                    <td>{handleTargetLabel(differenceInDays(props.orderData.activity.imballaggio.expire, new Date()))}</td>
+                                    <td>
+                                        <div className={`${props.orderData.activity.imballaggio.note ? 'avatar online placeholder' : "avatar offline placeholder"}`}>
+                                            <FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_imballaggio') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+
+                                <tr className='hover:bg-slate-300 border-b-2 border-black '>
+                                    <td>Trasporto</td>
+                                    <td>{new Date(props.orderData.activity.trasporto.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
+                                    <td>Data completato</td>
+                                    <td>
+                                        <select className='select select-bordered w-full max-w-xs' value={TRAstat} onChange={handleChangeTRAstat}>
+                                            {status.map((status, index) => (
+                                                <option key={index} value={status.value}>{status.label}</option>
+                                            ))}
+                                        </select>
+                                    </td>
+                                    <td>{intlFormatDistance(props.orderData.activity.trasporto.expire, new Date(), { "locale": "it" })}</td>
+                                    <td>{handleTargetLabel(differenceInDays(props.orderData.activity.trasporto.expire, new Date()))}</td>
+                                    <td>
+                                        <div className={`${props.orderData.activity.trasporto.note ? 'avatar online placeholder' : "avatar offline placeholder"}`}>
+                                            <FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_trasporto') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+
+                                <tr className='hover:bg-slate-300 border-b-2 border-black '>
+                                    <td>Consegna/Install.</td>
+                                    <td>{new Date(props.orderData.activity.consegnaInstallazione.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
+                                    <td>Data completato</td>
+                                    <td>
+                                        <select className='select select-bordered w-full max-w-xs' value={DELstat} onChange={handleChangeDELstat}>
+                                            {status.map((status, index) => (
+                                                <option key={index} value={status.value}>{status.label}</option>
+                                            ))}
+                                        </select>
+                                    </td>
+                                    <td>{intlFormatDistance(props.orderData.activity.consegnaInstallazione.expire, new Date(), { "locale": "it" })}</td>
+                                    <td>
+                                        {handleTargetLabel(differenceInDays(props.orderData.activity.consegnaInstallazione.expire, new Date()))}
+                                    </td>
+                                    <td>
+                                        <div className={`${props.orderData.activity.consegnaInstallazione.note ? 'avatar online placeholder' : "avatar offline placeholder"}`}>
+                                            <FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_consegnaInstallazione') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div>
-                    <p className='font-bold'>Cronologico</p>
-                    <p className=' text-center text-2xl'>{props.orderData.priority}</p>
-                </div>
-                <div>
-                    <p className='font-bold'>Scaffa materiale</p>
-                    <p className=' text-center text-2xl'>{props.orderData.materialShelf}</p>
                 </div>
             </div>
-            <div>
-                <div className="overflow-x-auto">
-                    <table className="table table-auto text-center text-md md:text-xl">
-                        <thead>
-                            <tr className='text-lg font-bold text-center'>
-                                <th>Attività</th>
-                                <th>Scadenza</th>
-                                <th>Completato</th>
-                                <th>Stato</th>
-                                <th>Timer</th>
-                                <th>Obbiettivo</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-
-
-                            <tr className='hover:bg-slate-300  border-b-2 border-black'>
-                                <td>Ricezione Alluminio</td>
-                                <td>{new Date(props.orderData.activity.ricezioneAlluminio.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-                                <td>Data completato</td>
-                                <td>
-                                    <select className='select select-bordered w-full max-w-xs' value={RAstat} onChange={handleChangeRAstat}>
-                                        {status.map((status, index) => (
-                                            <option key={index} value={status.value}>{status.label}</option>
-                                        ))}
-                                    </select>
-                                </td>
-                                <td>{intlFormatDistance(props.orderData.activity.ricezioneAlluminio.expire, new Date(), { "locale": "it" })}</td>
-                                <td>{handleTargetLabel(differenceInDays(props.orderData.activity.ricezioneAlluminio.expire, new Date()))}</td>
-                                <td><FaPlusCircle className='cursor-pointer' onClick={() => {
-                                    (document.getElementById('modal_ricezioneAlluminio') as HTMLDialogElement | null)?.showModal();
-                                }}
-                                    size={32}
-                                /></td>
-                            </tr>
-                            <tr>
-
-                                <td>
-                                    <NoteModal id={props.orderData._id} label='Ricezione alluminio' activity='ricezioneAlluminio' />
-                                </td>
-                            </tr>
-
-
-
-                            <tr className='hover:bg-slate-300 border-b-2 border-black'>
-                                <td>Ricezione vetri</td>
-                                <td>{new Date(props.orderData.activity.ricezioneVetri.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-                                <td>Data completato</td>
-                                <td>
-                                    <select className='select select-bordered w-full max-w-xs' value={RVstat} onChange={handleChangeRVstat}>
-                                        {status.map((status, index) => (
-                                            <option key={index} value={status.value}>{status.label}</option>
-                                        ))}
-                                    </select>
-                                </td>
-                                <td>{props ? intlFormatDistance(props.orderData.activity.ricezioneVetri.expire, new Date(), { "locale": "it" }) : ""}</td>
-                                <td>{handleTargetLabel(differenceInDays(props.orderData.activity.ricezioneVetri.expire, new Date()))}</td>
-                                <td><FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_ricezioneVetri') as HTMLDialogElement | null)?.showModal()} size={32} /></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <NoteModal id={props.orderData._id} label='Ricezione vetri' activity='ricezioneVetri' />
-                                </td>
-                            </tr>
-
-
-
-
-                            <tr className='hover:bg-slate-300 border-b-2 border-black'>
-                                <td>Taglio</td>
-                                <td>{new Date(props.orderData.activity.taglio.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-                                <td>Data completato</td>
-                                <td>
-                                    <select className='select select-bordered w-full max-w-xs' value={TAGstat} onChange={handleChangeTAGstat}>
-                                        {status.map((status, index) => (
-                                            <option key={index} value={status.value}>{status.label}</option>
-                                        ))}
-                                    </select>
-                                </td>
-                                <td>{intlFormatDistance(props.orderData.activity.taglio.expire, new Date(), { "locale": "it" })}</td>
-                                <td>{handleTargetLabel(differenceInDays(props.orderData.activity.taglio.expire, new Date()))}</td>
-                                <td><FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_taglio') as HTMLDialogElement | null)?.showModal()} size={32} /></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <NoteModal id={props.orderData._id} label='Taglio' activity='taglio' />
-                                </td>
-                            </tr>
-
-
-
-                            <tr className='hover:bg-slate-300 border-b-2 border-black '>
-                                <td>Lavorazione</td>
-                                <td>{new Date(props.orderData.activity.lavorazione.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-                                <td>Data completato</td>
-                                <td>
-                                    <select className='select select-bordered w-full max-w-xs' value={LAVstat} onChange={handleChangeLAVstat}>
-                                        {status.map((status, index) => (
-                                            <option key={index} value={status.value}>{status.label}</option>
-                                        ))}
-                                    </select>
-                                </td>
-                                <td>{intlFormatDistance(props.orderData.activity.lavorazione.expire, new Date(), { "locale": "it" })}</td>
-                                <td>{handleTargetLabel(differenceInDays(props.orderData.activity.lavorazione.expire, new Date()))}</td>
-                                <td><FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_lavorazione') as HTMLDialogElement | null)?.showModal()} size={32} /></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <NoteModal id={props.orderData._id} label='Lavorazione' activity='lavorazione' />
-                                </td>
-                            </tr>
-
-
-
-                            <tr className='hover:bg-slate-300 border-b-2 border-black '>
-                                <td>Assemblaggio</td>
-                                <td>{new Date(props.orderData.activity.assemblaggio.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-                                <td>Data completato</td>
-                                <td>
-                                    <select className='select select-bordered w-full max-w-xs' value={ASSstat} onChange={handleChangeASSstat}>
-                                        {status.map((status, index) => (
-                                            <option key={index} value={status.value}>{status.label}</option>
-                                        ))}
-                                    </select>
-                                </td>
-                                <td>{intlFormatDistance(props.orderData.activity.assemblaggio.expire, new Date(), { "locale": "it" })}</td>
-                                <td>{handleTargetLabel(differenceInDays(props.orderData.activity.assemblaggio.expire, new Date()))}</td>
-                                <td><FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_assemblaggio') as HTMLDialogElement | null)?.showModal()} size={32} /></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <NoteModal id={props.orderData._id} label='Assemblaggio' activity='assemblaggio' />
-                                </td>
-                            </tr>
-
-
-
-                            <tr className='hover:bg-slate-300 border-b-2 border-black '>
-                                <td>Installazione vetri</td>
-                                <td>{new Date(props.orderData.activity.installazioneVetri.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-                                <td>Data completato</td>
-                                <td>
-                                    <select className='select select-bordered w-full max-w-xs' value={IVstat} onChange={handleChangeIVstat}>
-                                        {status.map((status, index) => (
-                                            <option key={index} value={status.value}>{status.label}</option>
-                                        ))}
-                                    </select>
-                                </td>
-                                <td>{intlFormatDistance(props.orderData.activity.installazioneVetri.expire, new Date(), { "locale": "it" })}</td>
-                                <td>{handleTargetLabel(differenceInDays(props.orderData.activity.installazioneVetri.expire, new Date()))}</td>
-                                <td><FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_installazioneVetri') as HTMLDialogElement | null)?.showModal()} size={32} /></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <NoteModal id={props.orderData._id} label='Installazione vetri' activity='installazioneVetri' />
-                                </td>
-                            </tr>
-
-
-
-                            <tr className='hover:bg-slate-300 border-b-2 border-black'>
-                                <td>Imballaggio</td>
-                                <td>{new Date(props.orderData.activity.imballaggio.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-                                <td>Data completato</td>
-                                <td>
-                                    <select className='select select-bordered w-full max-w-xs' value={IMstat} onChange={handleChangeIMstat}>
-                                        {status.map((status, index) => (
-                                            <option key={index} value={status.value}>{status.label}</option>
-                                        ))}
-                                    </select>
-                                </td>
-                                <td>{intlFormatDistance(props.orderData.activity.imballaggio.expire, new Date(), { "locale": "it" })}</td>
-                                <td>{handleTargetLabel(differenceInDays(props.orderData.activity.imballaggio.expire, new Date()))}</td>
-                                <td><FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_imballaggio') as HTMLDialogElement | null)?.showModal()} size={32} /></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <NoteModal id={props.orderData._id} label='Imballaggio' activity='imballaggio' />
-                                </td>
-                            </tr>
-
-
-
-                            <tr className='hover:bg-slate-300 border-b-2 border-black '>
-                                <td>Trasporto</td>
-                                <td>{new Date(props.orderData.activity.trasporto.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-                                <td>Data completato</td>
-                                <td>
-                                    <select className='select select-bordered w-full max-w-xs' value={TRAstat} onChange={handleChangeTRAstat}>
-                                        {status.map((status, index) => (
-                                            <option key={index} value={status.value}>{status.label}</option>
-                                        ))}
-                                    </select>
-                                </td>
-                                <td>{intlFormatDistance(props.orderData.activity.trasporto.expire, new Date(), { "locale": "it" })}</td>
-                                <td>{handleTargetLabel(differenceInDays(props.orderData.activity.trasporto.expire, new Date()))}</td>
-                                <td><FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_trasporto') as HTMLDialogElement | null)?.showModal()} size={32} /></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <NoteModal id={props.orderData._id} label='Trasporto' activity='trasporto' />
-                                </td>
-                            </tr>
-
-
-
-                            <tr className='hover:bg-slate-300 border-b-2 border-black '>
-                                <td>Consegna/Install.</td>
-                                <td>{new Date(props.orderData.activity.consegnaInstallazione.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-                                <td>Data completato</td>
-                                <td>
-                                    <select className='select select-bordered w-full max-w-xs' value={DELstat} onChange={handleChangeDELstat}>
-                                        {status.map((status, index) => (
-                                            <option key={index} value={status.value}>{status.label}</option>
-                                        ))}
-                                    </select>
-                                </td>
-                                <td>{intlFormatDistance(props.orderData.activity.consegnaInstallazione.expire, new Date(), { "locale": "it" })}</td>
-                                <td>
-                                    {handleTargetLabel(differenceInDays(props.orderData.activity.consegnaInstallazione.expire, new Date()))}
-                                </td>
-                                <td><FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_consegnaInstallazione') as HTMLDialogElement | null)?.showModal()} size={32} /></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <NoteModal id={props.orderData._id} label='Consegna e/o installazione' activity='consegnaInstallazione' />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div>
-            </div>
-        </div>
+        </>
     )
 }
 
