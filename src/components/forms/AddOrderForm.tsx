@@ -221,7 +221,7 @@ const AddOrderForm = (props: Props) => {
                                 <tr>
                                     <td className="md:text-xl">Ric. vetri</td>
                                     <td className='md:text-xl'>
-                                        <ReactDatePicker className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={ricVetDate} onChange={(date: Date) => setVetAllDate(date)} />
+                                        <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15} className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={ricVetDate} onChange={(date: Date) => setVetAllDate(date)} />
                                     </td>
                                     <td>
                                         <select value={RVres} onChange={e => setRVres(e.target.value)} required className="select select-xs md:select-md select-bordered">
@@ -233,7 +233,7 @@ const AddOrderForm = (props: Props) => {
                                 <tr>
                                     <td className="md:text-xl">Taglio</td>
                                     <td className='md:text-xl'>
-                                        <ReactDatePicker className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={taglioDate} onChange={(date: Date) => setTaglioDate(date)} />
+                                        <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15} className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={taglioDate} onChange={(date: Date) => setTaglioDate(date)} />
                                     </td>
                                     <td>
                                         <select value={TAGRes} onChange={e => setTAGRes(e.target.value)} required className="select select-xs md:select-md select-bordered">
@@ -245,7 +245,7 @@ const AddOrderForm = (props: Props) => {
                                 <tr>
                                     <td className="md:text-xl">Lavorazione</td>
                                     <td className='md:text-xl'>
-                                        <ReactDatePicker className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={lavorazioneDate} onChange={(date: Date) => setLavorazioneDate(date)} />
+                                        <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15} className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={lavorazioneDate} onChange={(date: Date) => setLavorazioneDate(date)} />
                                     </td>
                                     <td>
                                         <select value={LAVres} onChange={e => setLAVres(e.target.value)} required className="select select-xs md:select-md select-bordered">
@@ -257,7 +257,7 @@ const AddOrderForm = (props: Props) => {
                                 <tr>
                                     <td className="md:text-xl">Assemblaggio</td>
                                     <td className='md:text-xl'>
-                                        <ReactDatePicker className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={assemblaggioDate} onChange={(date: Date) => setAssemblaggioDate(date)} />
+                                        <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15} className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={assemblaggioDate} onChange={(date: Date) => setAssemblaggioDate(date)} />
                                     </td>
                                     <td>
                                         <select value={ASSres} onChange={e => setASSres(e.target.value)} required className="select select-xs md:select-md select-bordered">
@@ -269,7 +269,7 @@ const AddOrderForm = (props: Props) => {
                                 <tr>
                                     <td className="md:text-xl">Inst. vetri</td>
                                     <td className='md:text-xl'>
-                                        <ReactDatePicker className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={instVetri} onChange={(date: Date) => setInstVetriDate(date)} />
+                                        <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15} className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={instVetri} onChange={(date: Date) => setInstVetriDate(date)} />
                                     </td>
                                     <td>
                                         <select value={IVres} onChange={e => setIVres(e.target.value)} required className="select select-xs md:select-md select-bordered">
@@ -281,7 +281,7 @@ const AddOrderForm = (props: Props) => {
                                 <tr>
                                     <td className="md:text-xl">Imballaggio</td>
                                     <td className='md:text-xl'>
-                                        <ReactDatePicker className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={imballaggioDate} onChange={(date: Date) => setImballaggioDate(date)} />
+                                        <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15} className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={imballaggioDate} onChange={(date: Date) => setImballaggioDate(date)} />
                                     </td>
                                     <td>
                                         <select value={IMres} onChange={e => setIMres(e.target.value)} required className="select select-xs md:select-md select-bordered">
@@ -293,7 +293,7 @@ const AddOrderForm = (props: Props) => {
                                 <tr>
                                     <td className="md:text-xl">Trasporto</td>
                                     <td className='md:text-xl'>
-                                        <ReactDatePicker className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={transportDate} onChange={(date: Date) => setTransportDate(date)} />
+                                        <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15} className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={transportDate} onChange={(date: Date) => setTransportDate(date)} />
                                     </td>
                                     <td>
                                         <select value={TRAres} onChange={e => setTRAres(e.target.value)} required className="select select-xs md:select-md select-bordered">
@@ -305,7 +305,7 @@ const AddOrderForm = (props: Props) => {
                                 <tr>
                                     <td className="md:text-xl">Consegna/Inst.</td>
                                     <td className='md:text-xl'>
-                                        <ReactDatePicker className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={delivInstDate} onChange={(date: Date) => setDelivInstDate(date)} />
+                                        <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15} className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={delivInstDate} onChange={(date: Date) => setDelivInstDate(date)} />
                                     </td>
                                     <td>
                                         <select value={DELres} onChange={e => setDELres(e.target.value)} required className="select select-xs md:select-md select-bordered">
@@ -325,7 +325,7 @@ const AddOrderForm = (props: Props) => {
                                         <tr>
                                             <td>Scadenza</td>
                                             <td>
-                                                <ReactDatePicker
+                                                <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15}
                                                     calendarClassName="custom-calendar"
                                                     minDate={new Date()}
                                                     selected={ricAllDate}
@@ -352,7 +352,7 @@ const AddOrderForm = (props: Props) => {
                                         <tr>
                                             <td>Scadenza</td>
                                             <td>
-                                                <ReactDatePicker calendarClassName="custom-calendar" minDate={new Date()} selected={ricVetDate} onChange={(date: Date) => setVetAllDate(date)} />
+                                                <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15} calendarClassName="custom-calendar" minDate={new Date()} selected={ricVetDate} onChange={(date: Date) => setVetAllDate(date)} />
                                             </td>
                                         </tr>
                                         <tr>
@@ -375,7 +375,7 @@ const AddOrderForm = (props: Props) => {
                                         <tr>
                                             <td>Scadenza</td>
                                             <td>
-                                                <ReactDatePicker calendarClassName="custom-calendar" minDate={new Date()} selected={taglioDate} onChange={(date: Date) => setTaglioDate(date)} />
+                                                <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15} calendarClassName="custom-calendar" minDate={new Date()} selected={taglioDate} onChange={(date: Date) => setTaglioDate(date)} />
                                             </td>
                                         </tr>
                                         <tr>
@@ -398,7 +398,7 @@ const AddOrderForm = (props: Props) => {
                                         <tr>
                                             <td>Scadenza</td>
                                             <td>
-                                                <ReactDatePicker calendarClassName="custom-calendar" minDate={new Date()} selected={lavorazioneDate} onChange={(date: Date) => setLavorazioneDate(date)} />
+                                                <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15} calendarClassName="custom-calendar" minDate={new Date()} selected={lavorazioneDate} onChange={(date: Date) => setLavorazioneDate(date)} />
                                             </td>
                                         </tr>
                                         <tr>
@@ -421,7 +421,7 @@ const AddOrderForm = (props: Props) => {
                                         <tr>
                                             <td>Scadenza</td>
                                             <td>
-                                                <ReactDatePicker calendarClassName="custom-calendar" minDate={new Date()} selected={assemblaggioDate} onChange={(date: Date) => setAssemblaggioDate(date)} />
+                                                <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15} calendarClassName="custom-calendar" minDate={new Date()} selected={assemblaggioDate} onChange={(date: Date) => setAssemblaggioDate(date)} />
                                             </td>
                                         </tr>
                                         <tr>
@@ -444,7 +444,7 @@ const AddOrderForm = (props: Props) => {
                                         <tr>
                                             <td>Scadenza</td>
                                             <td>
-                                                <ReactDatePicker calendarClassName="custom-calendar" minDate={new Date()} selected={instVetri} onChange={(date: Date) => setInstVetriDate(date)} />
+                                                <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15} calendarClassName="custom-calendar" minDate={new Date()} selected={instVetri} onChange={(date: Date) => setInstVetriDate(date)} />
                                             </td>
                                         </tr>
                                         <tr>
@@ -467,7 +467,7 @@ const AddOrderForm = (props: Props) => {
                                         <tr>
                                             <td>Scadenza</td>
                                             <td>
-                                                <ReactDatePicker calendarClassName="custom-calendar" minDate={new Date()} selected={imballaggioDate} onChange={(date: Date) => setImballaggioDate(date)} />
+                                                <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15} calendarClassName="custom-calendar" minDate={new Date()} selected={imballaggioDate} onChange={(date: Date) => setImballaggioDate(date)} />
                                             </td>
                                         </tr>
                                         <tr>
@@ -490,7 +490,7 @@ const AddOrderForm = (props: Props) => {
                                         <tr>
                                             <td>Scadenza</td>
                                             <td>
-                                                <ReactDatePicker calendarClassName="custom-calendar" minDate={new Date()} selected={transportDate} onChange={(date: Date) => setTransportDate(date)} />
+                                                <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15} calendarClassName="custom-calendar" minDate={new Date()} selected={transportDate} onChange={(date: Date) => setTransportDate(date)} />
                                             </td>
                                         </tr>
                                         <tr>
@@ -513,7 +513,7 @@ const AddOrderForm = (props: Props) => {
                                         <tr>
                                             <td>Scadenza</td>
                                             <td>
-                                                <ReactDatePicker calendarClassName="custom-calendar" minDate={new Date()} selected={delivInstDate} onChange={(date: Date) => setDelivInstDate(date)} />
+                                                <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15} calendarClassName="custom-calendar" minDate={new Date()} selected={delivInstDate} onChange={(date: Date) => setDelivInstDate(date)} />
                                             </td>
                                         </tr>
                                         <tr>

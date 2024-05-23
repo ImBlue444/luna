@@ -2,11 +2,15 @@
 import React, { useState } from 'react'
 import { status } from '@/utils/enums/status'
 import { differenceInDays } from "date-fns";
-import { FaPlusCircle } from "react-icons/fa";
+import { IoIosMail } from "react-icons/io";
+import { IoMailOutline } from "react-icons/io5";
+
 import { intlFormatDistance, isPast } from "date-fns";
 import NoteModal from './NoteModal';
 import { changeStatus } from '@/utils/libs/crud';
-import { activities } from '@/utils/enums/activities';
+import { FaPlusCircle } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+
 interface Order {
     activity: {
         ricezioneAlluminio: Activity;
@@ -103,15 +107,16 @@ const Order = (props: Props) => {
 
     return (
         <>
-            <NoteModal id={props.orderData._id} label='Ricezione alluminio' activity='ricezioneAlluminio' />
-            <NoteModal id={props.orderData._id} label='Ricezione vetri' activity='ricezioneVetri' />
-            <NoteModal id={props.orderData._id} label='Taglio' activity='taglio' />
-            <NoteModal id={props.orderData._id} label='Lavorazione' activity='lavorazione' />
-            <NoteModal id={props.orderData._id} label='Assemblaggio' activity='assemblaggio' />
-            <NoteModal id={props.orderData._id} label='Installazione vetri' activity='installazioneVetri' />
-            <NoteModal id={props.orderData._id} label='Imballaggio' activity='imballaggio' />
-            <NoteModal id={props.orderData._id} label='Trasporto' activity='trasporto' />
-            <NoteModal id={props.orderData._id} label='Consegna e/o installazione' activity='consegnaInstallazione' />
+            <ToastContainer style={{ zIndex: 9999 }} autoClose={3000} pauseOnHover={false} toastClassName={"z-10"} limit={1} />
+            <NoteModal note={props.orderData.activity.ricezioneAlluminio.note} id={props.orderData._id} label='Ricezione alluminio' activity='ricezioneAlluminio' />
+            <NoteModal note={props.orderData.activity.ricezioneVetri.note} id={props.orderData._id} label='Ricezione vetri' activity='ricezioneVetri' />
+            <NoteModal note={props.orderData.activity.taglio.note} id={props.orderData._id} label='Taglio' activity='taglio' />
+            <NoteModal note={props.orderData.activity.lavorazione.note} id={props.orderData._id} label='Lavorazione' activity='lavorazione' />
+            <NoteModal note={props.orderData.activity.assemblaggio.note} id={props.orderData._id} label='Assemblaggio' activity='assemblaggio' />
+            <NoteModal note={props.orderData.activity.installazioneVetri.note} id={props.orderData._id} label='Installazione vetri' activity='installazioneVetri' />
+            <NoteModal note={props.orderData.activity.imballaggio.note} id={props.orderData._id} label='Imballaggio' activity='imballaggio' />
+            <NoteModal note={props.orderData.activity.trasporto.note} id={props.orderData._id} label='Trasporto' activity='trasporto' />
+            <NoteModal note={props.orderData.activity.consegnaInstallazione.note} id={props.orderData._id} label='Consegna e/o installazione' activity='consegnaInstallazione' />
 
             <div className=' card my-4 py-4 px-8 mx-8 rounded-xl md:text-3xl bg-slate-100 border border-black'>
                 <div className='flex flex-col md:flex-row items-center md:justify-between text-center gap-4 mb-8 rounded-xl p-4 border border-black '>
@@ -164,8 +169,10 @@ const Order = (props: Props) => {
                                     <td>{intlFormatDistance(props.orderData.activity.ricezioneAlluminio.expire, new Date(), { "locale": "it" })}</td>
                                     <td>{handleTargetLabel(differenceInDays(props.orderData.activity.ricezioneAlluminio.expire, new Date()))}</td>
                                     <td>
-                                        <div className={`${props.orderData.activity.ricezioneAlluminio.note ? 'avatar online placeholder' : "avatar offline placeholder"}`}>
-                                            <FaPlusCircle className='cursor-pointer' onClick={() => { (document.getElementById('modal_ricezioneAlluminio') as HTMLDialogElement | null)?.showModal(); }} size={32} />
+                                        <div>
+                                            {props?.orderData?.activity?.ricezioneAlluminio?.note?.trim() !== '' ?
+                                                <IoIosMail className='cursor-pointer' onClick={() => { (document.getElementById('modal_ricezioneAlluminio') as HTMLDialogElement | null)?.showModal(); }} size={32} /> :
+                                                <IoMailOutline className='cursor-pointer' onClick={() => { (document.getElementById('modal_ricezioneAlluminio') as HTMLDialogElement | null)?.showModal(); }} size={32} />}
                                         </div>
                                     </td>
                                 </tr>
@@ -188,8 +195,11 @@ const Order = (props: Props) => {
                                     <td>{props ? intlFormatDistance(props.orderData.activity.ricezioneVetri.expire, new Date(), { "locale": "it" }) : ""}</td>
                                     <td>{handleTargetLabel(differenceInDays(props.orderData.activity.ricezioneVetri.expire, new Date()))}</td>
                                     <td>
-                                        <div className={`${props.orderData.activity.ricezioneVetri.note ? 'avatar online placeholder' : "avatar offline placeholder"}`}>
-                                            <FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_ricezioneVetri') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                        <div>
+                                            {props?.orderData?.activity?.ricezioneVetri?.note?.trim() !== '' ?
+                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_ricezioneVetri') as HTMLDialogElement | null)?.showModal()} size={32} /> :
+                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_ricezioneVetri') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                            }
                                         </div>
                                     </td>
                                 </tr>
@@ -211,8 +221,10 @@ const Order = (props: Props) => {
                                     <td>{intlFormatDistance(props.orderData.activity.taglio.expire, new Date(), { "locale": "it" })}</td>
                                     <td>{handleTargetLabel(differenceInDays(props.orderData.activity.taglio.expire, new Date()))}</td>
                                     <td>
-                                        <div className={`${props.orderData.activity.taglio.note ? 'avatar online placeholder' : "avatar offline placeholder"}`}>
-                                            <FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_taglio') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                        <div>
+                                            {props?.orderData?.activity?.taglio?.note?.trim() !== '' ?
+                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_taglio') as HTMLDialogElement | null)?.showModal()} size={32} /> :
+                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_taglio') as HTMLDialogElement | null)?.showModal()} size={32} />}
                                         </div>
                                     </td>
                                 </tr>
@@ -233,9 +245,11 @@ const Order = (props: Props) => {
                                     <td>{intlFormatDistance(props.orderData.activity.lavorazione.expire, new Date(), { "locale": "it" })}</td>
                                     <td>{handleTargetLabel(differenceInDays(props.orderData.activity.lavorazione.expire, new Date()))}</td>
                                     <td>
-                                        <div className={`${props.orderData.activity.lavorazione.note ? 'avatar online placeholder' : "avatar offline placeholder"}`}>
-                                            <FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_lavorazione') as HTMLDialogElement | null)?.showModal()} size={32} />
-                                        </div>
+                                        <div>
+                                            {props?.orderData?.activity?.lavorazione?.note?.trim() !== '' ?
+                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_lavorazione') as HTMLDialogElement | null)?.showModal()} size={32} /> :
+                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_lavorazione') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                            }</div>
                                     </td>
                                 </tr>
 
@@ -255,8 +269,11 @@ const Order = (props: Props) => {
                                     <td>{intlFormatDistance(props.orderData.activity.assemblaggio.expire, new Date(), { "locale": "it" })}</td>
                                     <td>{handleTargetLabel(differenceInDays(props.orderData.activity.assemblaggio.expire, new Date()))}</td>
                                     <td>
-                                        <div className={`${props.orderData.activity.assemblaggio.note ? 'avatar online placeholder' : "avatar offline placeholder"}`}>
-                                            <FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_assemblaggio') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                        <div>
+                                            {props?.orderData?.activity?.assemblaggio?.note?.trim() !== '' ?
+                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_assemblaggio') as HTMLDialogElement | null)?.showModal()} size={32} /> :
+                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_assemblaggio') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                            }
                                         </div>
                                     </td>
                                 </tr>
@@ -277,8 +294,12 @@ const Order = (props: Props) => {
                                     <td>{intlFormatDistance(props.orderData.activity.installazioneVetri.expire, new Date(), { "locale": "it" })}</td>
                                     <td>{handleTargetLabel(differenceInDays(props.orderData.activity.installazioneVetri.expire, new Date()))}</td>
                                     <td>
-                                        <div className={`${props.orderData.activity.installazioneVetri.note ? 'avatar online placeholder' : "avatar offline placeholder"}`}>
-                                            <FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_installazioneVetri') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                        <div>
+                                            {
+                                                props?.orderData?.activity?.installazioneVetri?.note?.trim() !== '' ?
+                                                    <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_installazioneVetri') as HTMLDialogElement | null)?.showModal()} size={32} /> :
+                                                    <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_installazioneVetri') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                            }
                                         </div>
                                     </td>
                                 </tr>
@@ -299,8 +320,11 @@ const Order = (props: Props) => {
                                     <td>{intlFormatDistance(props.orderData.activity.imballaggio.expire, new Date(), { "locale": "it" })}</td>
                                     <td>{handleTargetLabel(differenceInDays(props.orderData.activity.imballaggio.expire, new Date()))}</td>
                                     <td>
-                                        <div className={`${props.orderData.activity.imballaggio.note ? 'avatar online placeholder' : "avatar offline placeholder"}`}>
-                                            <FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_imballaggio') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                        <div>
+                                            {props?.orderData?.activity?.imballaggio?.note?.trim() !== '' ?
+                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_imballaggio') as HTMLDialogElement | null)?.showModal()} size={32} /> :
+                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_imballaggio') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                            }
                                         </div>
                                     </td>
                                 </tr>
@@ -321,8 +345,11 @@ const Order = (props: Props) => {
                                     <td>{intlFormatDistance(props.orderData.activity.trasporto.expire, new Date(), { "locale": "it" })}</td>
                                     <td>{handleTargetLabel(differenceInDays(props.orderData.activity.trasporto.expire, new Date()))}</td>
                                     <td>
-                                        <div className={`${props.orderData.activity.trasporto.note ? 'avatar online placeholder' : "avatar offline placeholder"}`}>
-                                            <FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_trasporto') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                        <div>
+                                            {props?.orderData?.activity?.trasporto?.note?.trim() !== '' ?
+                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_trasporto') as HTMLDialogElement | null)?.showModal()} size={32} /> :
+                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_trasporto') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                            }
                                         </div>
                                     </td>
                                 </tr>
@@ -345,8 +372,11 @@ const Order = (props: Props) => {
                                         {handleTargetLabel(differenceInDays(props.orderData.activity.consegnaInstallazione.expire, new Date()))}
                                     </td>
                                     <td>
-                                        <div className={`${props.orderData.activity.consegnaInstallazione.note ? 'avatar online placeholder' : "avatar offline placeholder"}`}>
-                                            <FaPlusCircle className='cursor-pointer' onClick={() => (document.getElementById('modal_consegnaInstallazione') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                        <div>
+                                            {props?.orderData?.activity?.consegnaInstallazione?.note?.trim() !== '' ?
+                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_consegnaInstallazione') as HTMLDialogElement | null)?.showModal()} size={32} /> :
+                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_consegnaInstallazione') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                            }
                                         </div>
                                     </td>
                                 </tr>
