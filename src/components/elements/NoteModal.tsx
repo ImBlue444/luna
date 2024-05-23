@@ -18,7 +18,7 @@ const NoteModal = (props: Props) => {
     const notifyError = (text: string) => toast.error(text);
     async function updateActivityNote(orderId: string, activityField: string, newNote: string) {
         try {
-            const url = `http://localhost:5000/orders/${orderId}/${activityField}/note`;
+            const url = `${process.env.NEXT_PUBLIC_LUNA_BASE_URL}/orders/${orderId}/${activityField}/note`;
             const data = { note: newNote };
             const response = await axios.patch(url, data);
             if (response.status >= 200 && response.status < 300) {

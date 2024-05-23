@@ -6,7 +6,7 @@ export const changeStatus = async (
   newStatus: string
 ) => {
   try {
-    const url = `http://localhost:5000/orders/${orderId}/${activityField}/status`;
+    const url = `${process.env.NEXT_PUBLIC_LUNA_BASE_URL}/orders/${orderId}/${activityField}/status`;
     const data = { status: newStatus };
     const response = await axios.patch(url, data);
     return response.data;

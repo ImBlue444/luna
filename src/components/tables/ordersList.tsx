@@ -9,7 +9,7 @@ type Props = {};
 const OrdersList = (props: Props) => {
     const [orders, setOrders] = useState([]);
     useEffect(() => {
-        axios.get('http://localhost:5000/orders')
+        axios.get(`${process.env.NEXT_PUBLIC_LUNA_BASE_URL}/orders`)
             .then(function (response) {
                 setOrders(response.data);
             })

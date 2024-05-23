@@ -46,7 +46,7 @@ const AddOrderForm = (props: Props) => {
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        axios.post('http://localhost:5000/orders', orderData)
+        axios.post(`${process.env.NEXT_PUBLIC_LUNA_BASE_URL}/orders`, orderData)
             .then(function (response) {
                 if (response.status === 201) {
                     notifySuccess("Commessa inserita con successo!")
