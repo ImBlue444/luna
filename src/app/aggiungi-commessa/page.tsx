@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 type Props = {}
 
-function page({ }: Props) {
+function Page({ }: Props) {
     const [isLoading, setIsLoading] = useState(false);
 
     if (isLoading) {
@@ -16,4 +16,4 @@ function page({ }: Props) {
     };
 }
 
-export default page
+export default Page

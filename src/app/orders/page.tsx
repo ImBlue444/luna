@@ -4,7 +4,7 @@ import { isAuthenticated } from "@/utils/Auth/Auth";
 import { useLayoutEffect, useState } from "react";
 import { redirect } from "next/navigation";
 
-export default function page() {
+export default function Page() {
   const [isLoading, setIsLoading] = useState(true);
 
   useLayoutEffect(() => {
