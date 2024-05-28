@@ -2,7 +2,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import Hero from '../hero/Hero'
+import Hero from '../Subnav/Hero'
 import logo from '../../../public/logo.webp'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation';
