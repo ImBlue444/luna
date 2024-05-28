@@ -5,11 +5,17 @@ import { usePathname } from 'next/navigation'
 import Hero from '../hero/Hero'
 import logo from '../../../public/logo.webp'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation';
 
 type Props = {}
 
 const Sidebar = (props: Props) => {
     const pathName = usePathname();
+    const router = useRouter();
+    const handleExit = () => {
+        localStorage.removeItem('token');
+        router.replace('/');
+    }
     if (pathName !== "/") {
         return (
             <div>
@@ -32,7 +38,7 @@ const Sidebar = (props: Props) => {
                                     <ul className="menu menu-horizontal">
                                         {/* Navbar menu content here */}
                                         <li><Link href={"/orders"}>Supporto</Link></li>
-                                        <li><Link href={"/"}>Esci</Link></li>
+                                        <li><p onClick={() => handleExit()}>Esci</p></li>
                                     </ul>
                                 </div>
                             }
@@ -44,7 +50,7 @@ const Sidebar = (props: Props) => {
                             <ul className="menu p-4 w-80 min-h-full bg-slate-200">
                                 {/* Sidebar content here */}
                                 <li><Link href={"/orders"}>Supporto</Link></li>
-                                <li><Link href={"/"}>Esci</Link></li>
+                                <li><p className='link' onClick={() => handleExit()}>Esci</p></li>
                             </ul>
                         </div>
                     }
