@@ -1,18 +1,19 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { status } from '@/utils/enums/status'
 import { differenceInDays } from "date-fns";
 import { IoIosMail } from "react-icons/io";
 import { IoMailOutline } from "react-icons/io5";
-
+import { useRouter } from 'next/navigation';
 import { intlFormatDistance, isPast } from "date-fns";
 import NoteModal from './NoteModal';
-import { changeStatus } from '@/utils/libs/crud';
-import { FaPlusCircle } from 'react-icons/fa';
+import { changeStatus, completeActivity } from '@/utils/libs/crud';
 import { ToastContainer, toast } from 'react-toastify';
+import Progress from './OrderElements/Progress';
 
 interface Order {
     activity: {
+        [key: string]: Activity;
         ricezioneAlluminio: Activity;
         ricezioneVetri: Activity;
         taglio: Activity;
@@ -45,6 +46,7 @@ type Props = {
 }
 
 const Order = (props: Props) => {
+    const router = useRouter();
 
     const [RAstat, setRAstat] = useState(props.orderData.activity.ricezioneAlluminio.status);
     const [RVstat, setRVstat] = useState(props.orderData.activity.ricezioneVetri.status);
@@ -56,41 +58,116 @@ const Order = (props: Props) => {
     const [TRAstat, setTRAstat] = useState(props.orderData.activity.trasporto.status);
     const [DELstat, setDELstat] = useState(props.orderData.activity.consegnaInstallazione.status);
 
+
+    const getCompletedActivitiesCount = (orderData: Order): number => {
+        let completedCount = 0;
+        Object.values(orderData.activity).forEach((activity) => {
+            if (activity.completed && new Date(activity.completed) instanceof Date && !isNaN(new Date(activity.completed).getTime())) {
+                completedCount++;
+            }
+        });
+        return completedCount;
+    };
+
+
     const handleChangeRAstat = (event: { target: any }) => {
-        changeStatus(props.orderData._id, 'ricezioneAlluminio', event.target.value)
-        setRAstat(event.target.value);
+        if (event.target.value === 'Completato') {
+            completeActivity(props.orderData._id, 'ricezioneAlluminio')
+            changeStatus(props.orderData._id, 'ricezioneAlluminio', event.target.value)
+            setRAstat(event.target.value);
+            window.location.reload();
+        } else {
+            changeStatus(props.orderData._id, 'ricezioneAlluminio', event.target.value)
+            setRAstat(event.target.value);
+        }
     };
     const handleChangeRVstat = (event: { target: any }) => {
-        changeStatus(props.orderData._id, 'ricezioneVetri', event.target.value)
-        setRVstat(event.target.value);
+        if (event.target.value === 'Completato') {
+            completeActivity(props.orderData._id, 'ricezioneVetri')
+            changeStatus(props.orderData._id, 'ricezioneVetri', event.target.value)
+            setRVstat(event.target.value);
+            window.location.reload();
+        } else {
+            changeStatus(props.orderData._id, 'ricezioneVetri', event.target.value)
+            setRVstat(event.target.value);
+        }
     };
     const handleChangeTAGstat = (event: { target: any }) => {
-        changeStatus(props.orderData._id, 'taglio', event.target.value)
-        setTAGstat(event.target.value);
+        if (event.target.value === 'Completato') {
+            completeActivity(props.orderData._id, 'taglio')
+            changeStatus(props.orderData._id, 'taglio', event.target.value)
+            setTAGstat(event.target.value);
+            window.location.reload();
+        } else {
+            changeStatus(props.orderData._id, 'taglio', event.target.value)
+            setTAGstat(event.target.value);
+        }
     };
     const handleChangeLAVstat = (event: { target: any }) => {
-        changeStatus(props.orderData._id, 'lavorazione', event.target.value)
-        setLAVstat(event.target.value);
+        if (event.target.value === 'Completato') {
+            completeActivity(props.orderData._id, 'lavorazione')
+            changeStatus(props.orderData._id, 'lavorazione', event.target.value)
+            setLAVstat(event.target.value);
+            window.location.reload();
+        } else {
+            changeStatus(props.orderData._id, 'lavorazione', event.target.value)
+            setLAVstat(event.target.value);
+        }
     };
     const handleChangeASSstat = (event: { target: any }) => {
-        changeStatus(props.orderData._id, 'assemblaggio', event.target.value)
-        setASSstat(event.target.value);
+        if (event.target.value === 'Completato') {
+            completeActivity(props.orderData._id, 'assemblaggio')
+            changeStatus(props.orderData._id, 'assemblaggio', event.target.value)
+            setASSstat(event.target.value);
+            window.location.reload();
+        } else {
+            changeStatus(props.orderData._id, 'assemblaggio', event.target.value)
+            setASSstat(event.target.value);
+        }
     };
     const handleChangeIVstat = (event: { target: any }) => {
-        changeStatus(props.orderData._id, 'installazioneVetri', event.target.value)
-        setIVstat(event.target.value);
+        if (event.target.value === 'Completato') {
+            completeActivity(props.orderData._id, 'installazioneVetri')
+            changeStatus(props.orderData._id, 'installazioneVetri', event.target.value)
+            setIVstat(event.target.value);
+            window.location.reload();
+        } else {
+            changeStatus(props.orderData._id, 'installazioneVetri', event.target.value)
+            setIVstat(event.target.value);
+        }
     };
     const handleChangeIMstat = (event: { target: any }) => {
-        changeStatus(props.orderData._id, 'imballaggio', event.target.value)
-        setIMstat(event.target.value);
+        if (event.target.value === 'Completato') {
+            completeActivity(props.orderData._id, 'imballaggio')
+            changeStatus(props.orderData._id, 'imballaggio', event.target.value)
+            setIMstat(event.target.value);
+            window.location.reload();
+        } else {
+            changeStatus(props.orderData._id, 'imballaggio', event.target.value)
+            setIMstat(event.target.value);
+        }
     };
     const handleChangeTRAstat = (event: { target: any }) => {
-        changeStatus(props.orderData._id, 'trasporto', event.target.value)
-        setTRAstat(event.target.value);
+        if (event.target.value === 'Completato') {
+            completeActivity(props.orderData._id, 'trasporto')
+            changeStatus(props.orderData._id, 'trasporto', event.target.value)
+            setTRAstat(event.target.value);
+            window.location.reload();
+        } else {
+            changeStatus(props.orderData._id, 'trasporto', event.target.value)
+            setTRAstat(event.target.value);
+        }
     };
     const handleChangeDELstat = (event: { target: any }) => {
-        changeStatus(props.orderData._id, 'consegnaInstallazione', event.target.value)
-        setDELstat(event.target.value);
+        if (event.target.value === 'Completato') {
+            completeActivity(props.orderData._id, 'consegnaInstallazione')
+            changeStatus(props.orderData._id, 'consegnaInstallazione', event.target.value)
+            setDELstat(event.target.value);
+            window.location.reload();
+        } else {
+            changeStatus(props.orderData._id, 'consegnaInstallazione', event.target.value)
+            setDELstat(event.target.value);
+        }
     };
 
 
@@ -157,10 +234,10 @@ const Order = (props: Props) => {
 
                                 <tr className='hover:bg-slate-300  border-b-2 border-black'>
                                     <td>Ricezione Alluminio</td>
-                                    <td>{new Date(props.orderData.activity.ricezioneAlluminio.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-                                    <td>Data completato</td>
+                                    <td>{new Date(props.orderData.activity.ricezioneAlluminio.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
+                                    <td>{props.orderData.activity.ricezioneAlluminio.completed ? new Date(props.orderData.activity.ricezioneAlluminio.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : '--'}</td>
                                     <td>
-                                        <select className='select select-bordered w-full max-w-xs' value={RAstat} onChange={handleChangeRAstat}>
+                                        <select disabled={RAstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={RAstat} onChange={handleChangeRAstat}>
                                             {status.map((status, index) => (
                                                 <option key={index} value={status.value}>{status.label}</option>
                                             ))}
@@ -183,10 +260,10 @@ const Order = (props: Props) => {
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black'>
                                     <td>Ricezione vetri</td>
-                                    <td>{new Date(props.orderData.activity.ricezioneVetri.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-                                    <td>Data completato</td>
+                                    <td>{new Date(props.orderData.activity.ricezioneVetri.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
+                                    <td>{props.orderData.activity.ricezioneVetri.completed ? new Date(props.orderData.activity.ricezioneVetri.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
-                                        <select className='select select-bordered w-full max-w-xs' value={RVstat} onChange={handleChangeRVstat}>
+                                        <select disabled={RVstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={RVstat} onChange={handleChangeRVstat}>
                                             {status.map((status, index) => (
                                                 <option key={index} value={status.value}>{status.label}</option>
                                             ))}
@@ -209,10 +286,10 @@ const Order = (props: Props) => {
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black'>
                                     <td>Taglio</td>
-                                    <td>{new Date(props.orderData.activity.taglio.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-                                    <td>Data completato</td>
+                                    <td>{new Date(props.orderData.activity.taglio.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
+                                    <td>{props.orderData.activity.taglio.completed ? new Date(props.orderData.activity.taglio.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
-                                        <select className='select select-bordered w-full max-w-xs' value={TAGstat} onChange={handleChangeTAGstat}>
+                                        <select disabled={TAGstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={TAGstat} onChange={handleChangeTAGstat}>
                                             {status.map((status, index) => (
                                                 <option key={index} value={status.value}>{status.label}</option>
                                             ))}
@@ -233,10 +310,10 @@ const Order = (props: Props) => {
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black '>
                                     <td>Lavorazione</td>
-                                    <td>{new Date(props.orderData.activity.lavorazione.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-                                    <td>Data completato</td>
+                                    <td>{new Date(props.orderData.activity.lavorazione.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
+                                    <td>{props.orderData.activity.lavorazione.completed ? new Date(props.orderData.activity.lavorazione.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
-                                        <select className='select select-bordered w-full max-w-xs' value={LAVstat} onChange={handleChangeLAVstat}>
+                                        <select disabled={LAVstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={LAVstat} onChange={handleChangeLAVstat}>
                                             {status.map((status, index) => (
                                                 <option key={index} value={status.value}>{status.label}</option>
                                             ))}
@@ -257,10 +334,10 @@ const Order = (props: Props) => {
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black '>
                                     <td>Assemblaggio</td>
-                                    <td>{new Date(props.orderData.activity.assemblaggio.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-                                    <td>Data completato</td>
+                                    <td>{new Date(props.orderData.activity.assemblaggio.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
+                                    <td>{props.orderData.activity.assemblaggio.completed ? new Date(props.orderData.activity.assemblaggio.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
-                                        <select className='select select-bordered w-full max-w-xs' value={ASSstat} onChange={handleChangeASSstat}>
+                                        <select disabled={ASSstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={ASSstat} onChange={handleChangeASSstat}>
                                             {status.map((status, index) => (
                                                 <option key={index} value={status.value}>{status.label}</option>
                                             ))}
@@ -282,10 +359,10 @@ const Order = (props: Props) => {
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black '>
                                     <td>Installazione vetri</td>
-                                    <td>{new Date(props.orderData.activity.installazioneVetri.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-                                    <td>Data completato</td>
+                                    <td>{new Date(props.orderData.activity.installazioneVetri.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
+                                    <td>{props.orderData.activity.installazioneVetri.completed ? new Date(props.orderData.activity.installazioneVetri.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
-                                        <select className='select select-bordered w-full max-w-xs' value={IVstat} onChange={handleChangeIVstat}>
+                                        <select disabled={IVstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={IVstat} onChange={handleChangeIVstat}>
                                             {status.map((status, index) => (
                                                 <option key={index} value={status.value}>{status.label}</option>
                                             ))}
@@ -308,10 +385,10 @@ const Order = (props: Props) => {
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black'>
                                     <td>Imballaggio</td>
-                                    <td>{new Date(props.orderData.activity.imballaggio.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-                                    <td>Data completato</td>
+                                    <td>{new Date(props.orderData.activity.imballaggio.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
+                                    <td>{props.orderData.activity.imballaggio.completed ? new Date(props.orderData.activity.imballaggio.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
-                                        <select className='select select-bordered w-full max-w-xs' value={IMstat} onChange={handleChangeIMstat}>
+                                        <select disabled={IMstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={IMstat} onChange={handleChangeIMstat}>
                                             {status.map((status, index) => (
                                                 <option key={index} value={status.value}>{status.label}</option>
                                             ))}
@@ -333,10 +410,10 @@ const Order = (props: Props) => {
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black '>
                                     <td>Trasporto</td>
-                                    <td>{new Date(props.orderData.activity.trasporto.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-                                    <td>Data completato</td>
+                                    <td>{new Date(props.orderData.activity.trasporto.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
+                                    <td>{props.orderData.activity.trasporto.completed ? new Date(props.orderData.activity.trasporto.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
-                                        <select className='select select-bordered w-full max-w-xs' value={TRAstat} onChange={handleChangeTRAstat}>
+                                        <select disabled={TRAstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={TRAstat} onChange={handleChangeTRAstat}>
                                             {status.map((status, index) => (
                                                 <option key={index} value={status.value}>{status.label}</option>
                                             ))}
@@ -358,10 +435,10 @@ const Order = (props: Props) => {
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black '>
                                     <td>Consegna/Install.</td>
-                                    <td>{new Date(props.orderData.activity.consegnaInstallazione.expire).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-                                    <td>Data completato</td>
+                                    <td>{new Date(props.orderData.activity.consegnaInstallazione.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
+                                    <td>{props.orderData.activity.consegnaInstallazione.completed ? new Date(props.orderData.activity.consegnaInstallazione.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
-                                        <select className='select select-bordered w-full max-w-xs' value={DELstat} onChange={handleChangeDELstat}>
+                                        <select disabled={DELstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={DELstat} onChange={handleChangeDELstat}>
                                             {status.map((status, index) => (
                                                 <option key={index} value={status.value}>{status.label}</option>
                                             ))}
@@ -385,6 +462,10 @@ const Order = (props: Props) => {
                     </div>
                 </div>
                 <div>
+                </div>
+                <div className='flex justify-between items-center center my-4'>
+                    <Progress progressValue={getCompletedActivitiesCount(props.orderData)} />
+                    <button disabled={getCompletedActivitiesCount(props.orderData) >= 9 ? false : true} className={`btn btn-success rounded-lg w-1/4 shadow-xl`}>Archivia</button>
                 </div>
             </div>
         </>
