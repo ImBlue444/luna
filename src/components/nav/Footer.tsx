@@ -7,7 +7,7 @@ type Props = {}
 
 const Footer = (props: Props) => {
     const pathName = usePathname();
-    if (pathName !== "/") {
+    if (pathName !== "/login") {
         return (
             <footer className="footer footer-center  p-10 bg-slate-200 text-base-content rounded">
                 <nav className="grid grid-flow-col gap-4">

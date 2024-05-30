@@ -16,7 +16,7 @@ const Sidebar = (props: Props) => {
         localStorage.removeItem('token');
         router.replace('/');
     }
-    if (pathName !== "/") {
+    if (pathName !== "/login") {
         return (
             <div>
                 <div className="drawer z-50">
@@ -33,7 +33,7 @@ const Sidebar = (props: Props) => {
                                 <Link href={"/orders"} className="btn btn-ghost text-xl rounded-lg">Luna <Image src={logo} alt='logo' width={80} /></Link>
 
                             </div>
-                            {pathName === "/" ? "" :
+                            {pathName === "/login" ? "" :
                                 <div className="flex-none hidden lg:block">
                                     <ul className="menu menu-horizontal">
                                         {/* Navbar menu content here */}
@@ -44,7 +44,7 @@ const Sidebar = (props: Props) => {
                             }
                         </div>
                     </div>
-                    {pathName === "/" ? "" :
+                    {pathName === "/login" ? "" :
                         <div className="drawer-side">
                             <label htmlFor="my-drawer-3" aria-label="close sidebar" className="drawer-overlay"></label>
                             <ul className="menu p-4 w-80 min-h-full bg-slate-200">

@@ -1,6 +1,6 @@
 import { jwtDecode, JwtPayload } from "jwt-decode";
 
-export const isAuthenticated = (): boolean => {
+export const isAuthenticated = (): any => {
   const token = localStorage.getItem("token");
 
   if (!token) {
@@ -13,9 +13,9 @@ export const isAuthenticated = (): boolean => {
     // Controlla se il token ha una proprietà 'exp' (expiry) e se è scaduto
     if (decodedToken.exp && Date.now() >= decodedToken.exp * 1000) {
       return false;
+    } else {
+      return decodedToken;
     }
-
-    return true;
   } catch (error) {
     // Se c'è un errore nel decodificare il token, consideralo come non valido
     return false;

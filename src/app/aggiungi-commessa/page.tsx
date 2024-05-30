@@ -14,7 +14,7 @@ function Page({ }: Props) {
     useLayoutEffect(() => {
         const isAuth = isAuthenticated();
         if (!isAuth) {
-            redirect("/")
+            redirect("/login")
         } else setIsLoading(false);
     }, [])
 
