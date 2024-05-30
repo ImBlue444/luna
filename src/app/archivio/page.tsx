@@ -15,7 +15,6 @@ const Page = (props: Props) => {
 
     useLayoutEffect(() => {
         const isAuth = isAuthenticated();
-        console.log(isAuth)
         if (!isAuth) {
             redirect("/login")
         } else {

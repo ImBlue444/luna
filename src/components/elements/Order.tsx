@@ -198,7 +198,7 @@ const Order = (props: Props) => {
             <div className=' card my-4 py-4 px-8 mx-8 rounded-xl md:text-3xl bg-slate-100 border border-black'>
                 <div className='flex flex-col md:flex-row items-center md:justify-between text-center gap-4 mb-8 rounded-xl p-4 border border-black '>
                     <div>
-                        <p onClick={() => console.log(differenceInDays(props.orderData.activity.ricezioneAlluminio.expire, new Date()))} className='font-bold'>Commessa</p>
+                        <p className='font-bold'>Commessa</p>
                         <p className=' text-center text-2xl'>{props.orderData.orderName}</p>
                     </div>
                     <div>
@@ -233,7 +233,7 @@ const Order = (props: Props) => {
 
 
                                 <tr className='hover:bg-slate-300  border-b-2 border-black'>
-                                    <td>Ricezione Alluminio</td>
+                                    <td className="font-semibold">Ricezione Alluminio</td>
                                     <td>{new Date(props.orderData.activity.ricezioneAlluminio.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
                                     <td>{props.orderData.activity.ricezioneAlluminio.completed ? new Date(props.orderData.activity.ricezioneAlluminio.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : '--'}</td>
                                     <td>
@@ -259,7 +259,7 @@ const Order = (props: Props) => {
 
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black'>
-                                    <td>Ricezione vetri</td>
+                                    <td className="font-semibold">Ricezione vetri</td>
                                     <td>{new Date(props.orderData.activity.ricezioneVetri.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
                                     <td>{props.orderData.activity.ricezioneVetri.completed ? new Date(props.orderData.activity.ricezioneVetri.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
@@ -285,7 +285,7 @@ const Order = (props: Props) => {
 
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black'>
-                                    <td>Taglio</td>
+                                    <td className="font-semibold">Taglio</td>
                                     <td>{new Date(props.orderData.activity.taglio.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
                                     <td>{props.orderData.activity.taglio.completed ? new Date(props.orderData.activity.taglio.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
@@ -309,7 +309,7 @@ const Order = (props: Props) => {
 
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black '>
-                                    <td>Lavorazione</td>
+                                    <td className="font-semibold">Lavorazione</td>
                                     <td>{new Date(props.orderData.activity.lavorazione.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
                                     <td>{props.orderData.activity.lavorazione.completed ? new Date(props.orderData.activity.lavorazione.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
@@ -333,7 +333,7 @@ const Order = (props: Props) => {
 
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black '>
-                                    <td>Assemblaggio</td>
+                                    <td className="font-semibold">Assemblaggio</td>
                                     <td>{new Date(props.orderData.activity.assemblaggio.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
                                     <td>{props.orderData.activity.assemblaggio.completed ? new Date(props.orderData.activity.assemblaggio.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
@@ -358,7 +358,7 @@ const Order = (props: Props) => {
 
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black '>
-                                    <td>Installazione vetri</td>
+                                    <td className="font-semibold">Installazione vetri</td>
                                     <td>{new Date(props.orderData.activity.installazioneVetri.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
                                     <td>{props.orderData.activity.installazioneVetri.completed ? new Date(props.orderData.activity.installazioneVetri.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
@@ -384,7 +384,7 @@ const Order = (props: Props) => {
 
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black'>
-                                    <td>Imballaggio</td>
+                                    <td className="font-semibold">Imballaggio</td>
                                     <td>{new Date(props.orderData.activity.imballaggio.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
                                     <td>{props.orderData.activity.imballaggio.completed ? new Date(props.orderData.activity.imballaggio.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
@@ -409,7 +409,7 @@ const Order = (props: Props) => {
 
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black '>
-                                    <td>Trasporto</td>
+                                    <td className="font-semibold">Trasporto</td>
                                     <td>{new Date(props.orderData.activity.trasporto.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
                                     <td>{props.orderData.activity.trasporto.completed ? new Date(props.orderData.activity.trasporto.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
@@ -434,7 +434,7 @@ const Order = (props: Props) => {
 
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black '>
-                                    <td>Consegna/Install.</td>
+                                    <td className="font-semibold">Consegna/Install.</td>
                                     <td>{new Date(props.orderData.activity.consegnaInstallazione.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
                                     <td>{props.orderData.activity.consegnaInstallazione.completed ? new Date(props.orderData.activity.consegnaInstallazione.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>

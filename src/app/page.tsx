@@ -11,7 +11,6 @@ export default function Home() {
 
   useLayoutEffect(() => {
     const isAuth = isAuthenticated();
-    console.log(isAuth)
     if (!isAuth) {
       redirect("/login")
     } else {
