@@ -1,12 +1,14 @@
 import axios from "axios";
 
+const baseUrl = `${process.env.NEXT_PUBLIC_LUNA_BASE_URL}`;
+
 export const changeStatus = async (
   orderId: string,
   activityField: string,
   newStatus: string
 ) => {
   try {
-    const url = `${process.env.NEXT_PUBLIC_LUNA_BASE_URL}/orders/${orderId}/${activityField}/status`;
+    const url = `${baseUrl}/orders/${orderId}/${activityField}/status`;
     const data = { status: newStatus };
     const response = await axios.patch(url, data);
     return response.data;
@@ -20,7 +22,7 @@ export const completeActivity = async (
   activityField: string
 ) => {
   try {
-    const url = `${process.env.NEXT_PUBLIC_LUNA_BASE_URL}/orders/${orderId}/${activityField}/completed`;
+    const url = `${baseUrl}/orders/${orderId}/${activityField}/completed`;
     const data = { completed: new Date() };
     const response = await axios.patch(url, data);
     return response.data;
