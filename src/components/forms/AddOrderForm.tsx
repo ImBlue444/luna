@@ -6,46 +6,61 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { workers } from '@/utils/enums/workers';
 import axios from 'axios';
+import Order from '../elements/Order';
 
-type Props = {}
+type Props = {
+    orderData?: Order;
+    isEdit: boolean;
+}
 
 const AddOrderForm = (props: Props) => {
     // Date states
-    const [ricAllDate, setRicAllDate] = useState(new Date());
-    const [ricVetDate, setVetAllDate] = useState(new Date());
-    const [taglioDate, setTaglioDate] = useState(new Date());
-    const [lavorazioneDate, setLavorazioneDate] = useState(new Date());
-    const [assemblaggioDate, setAssemblaggioDate] = useState(new Date());
-    const [instVetri, setInstVetriDate] = useState(new Date());
-    const [imballaggioDate, setImballaggioDate] = useState(new Date());
-    const [transportDate, setTransportDate] = useState(new Date());
-    const [delivInstDate, setDelivInstDate] = useState(new Date());
+    const [ricAllDate, setRicAllDate] = useState(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.ricezioneAlluminio.expire!));
+    const [ricVetDate, setVetAllDate] = useState(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.ricezioneVetri.expire!));
+    const [taglioDate, setTaglioDate] = useState(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.taglio.expire!));
+    const [lavorazioneDate, setLavorazioneDate] = useState(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.lavorazione.expire!));
+    const [assemblaggioDate, setAssemblaggioDate] = useState(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.assemblaggio.expire!));
+    const [instVetri, setInstVetriDate] = useState(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.installazioneVetri.expire!));
+    const [imballaggioDate, setImballaggioDate] = useState(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.imballaggio.expire!));
+    const [transportDate, setTransportDate] = useState(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.trasporto.expire!));
+    const [delivInstDate, setDelivInstDate] = useState(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.consegnaInstallazione.expire!));
 
     // Order states
-    const [orderName, setOrderName] = useState("");
-    const [materialShelf, setMaterialShelf] = useState("");
-    const [urgency, setUrgency] = useState("");
-    const [priority, setPriority] = useState("");
-    const [orderManager, setOrderManager] = useState("");
+    const [orderName, setOrderName] = useState(props.isEdit != true ? "" : props.orderData?.orderName!);
+    const [materialShelf, setMaterialShelf] = useState(props.isEdit != true ? "" : props.orderData?.materialShelf!);
+    const [urgency, setUrgency] = useState(props.isEdit != true ? "" : props.orderData?.urgency!);
+    const [priority, setPriority] = useState(props.isEdit != true ? "" : props.orderData?.priority);
+    const [orderManager, setOrderManager] = useState(props.isEdit != true ? "" : props.orderData?.orderManager!);
 
     //Activity states
 
-    const [RAres, setRAres] = useState("");
-    const [RVres, setRVres] = useState("");
-    const [TAGRes, setTAGRes] = useState("");
-    const [LAVres, setLAVres] = useState("");
-    const [ASSres, setASSres] = useState("");
-    const [IVres, setIVres] = useState("");
-    const [IMres, setIMres] = useState("");
-    const [TRAres, setTRAres] = useState("");
-    const [DELres, setDELres] = useState("");
+    const [RAres, setRAres] = useState(props.isEdit != true ? "" : props.orderData?.activity.ricezioneAlluminio.activityManager!);
+    const [RVres, setRVres] = useState(props.isEdit != true ? "" : props.orderData?.activity.ricezioneVetri.activityManager!);
+    const [TAGRes, setTAGRes] = useState(props.isEdit != true ? "" : props.orderData?.activity.taglio.activityManager!);
+    const [LAVres, setLAVres] = useState(props.isEdit != true ? "" : props.orderData?.activity.lavorazione.activityManager!);
+    const [ASSres, setASSres] = useState(props.isEdit != true ? "" : props.orderData?.activity.assemblaggio.activityManager!);
+    const [IVres, setIVres] = useState(props.isEdit != true ? "" : props.orderData?.activity.installazioneVetri.activityManager!);
+    const [IMres, setIMres] = useState(props.isEdit != true ? "" : props.orderData?.activity.imballaggio.activityManager!);
+    const [TRAres, setTRAres] = useState(props.isEdit != true ? "" : props.orderData?.activity.trasporto.activityManager!);
+    const [DELres, setDELres] = useState(props.isEdit != true ? "" : props.orderData?.activity.consegnaInstallazione.activityManager!);
 
     const notifySuccess = (text: string) => toast.success(text);
     const notifyError = (text: string) => toast.error(text);
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
+        if (props.isEdit) {
+            axios.put(`${process.env.NEXT_PUBLIC_LUNA_BASE_URL}/orders/${props.orderData?._id}`, orderData)
+                .then(function (response) {
+                    if (response.status === 200) {
+                        notifySuccess("Commessa modificata con successo!")
+                    } else notifyError("Qualcosa è andato storto!")
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            return;
+        }
         axios.post(`${process.env.NEXT_PUBLIC_LUNA_BASE_URL}/orders`, orderData)
             .then(function (response) {
                 if (response.status === 201) {
@@ -59,29 +74,29 @@ const AddOrderForm = (props: Props) => {
     };
 
     const resetFields = () => {
-        setRicAllDate(new Date());
-        setVetAllDate(new Date());
-        setTaglioDate(new Date());
-        setLavorazioneDate(new Date());
-        setAssemblaggioDate(new Date());
-        setInstVetriDate(new Date());
-        setImballaggioDate(new Date());
-        setTransportDate(new Date());
-        setDelivInstDate(new Date());
-        setOrderName("");
-        setMaterialShelf("");
-        setUrgency("");
-        setPriority("");
-        setOrderManager("");
-        setRAres("");
-        setRVres("");
-        setTAGRes("");
-        setLAVres("");
-        setASSres("");
-        setIVres("");
-        setIMres("");
-        setTRAres("");
-        setDELres("");
+        setRicAllDate(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.ricezioneAlluminio.expire!));
+        setVetAllDate(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.ricezioneVetri.expire!));
+        setTaglioDate(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.taglio.expire!));
+        setLavorazioneDate(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.lavorazione.expire!));
+        setAssemblaggioDate(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.assemblaggio.expire!));
+        setInstVetriDate(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.installazioneVetri.expire!));
+        setImballaggioDate(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.imballaggio.expire!));
+        setTransportDate(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.trasporto.expire!));
+        setDelivInstDate(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.consegnaInstallazione.expire!));
+        setOrderName(props.isEdit != true ? "" : props.orderData?.orderName!);
+        setMaterialShelf(props.isEdit != true ? "" : props.orderData?.materialShelf!);
+        setUrgency(props.isEdit != true ? "" : props.orderData?.urgency!);
+        setPriority(props.isEdit != true ? "" : String(props.orderData?.priority!));
+        setOrderManager(props.isEdit != true ? "" : props.orderData?.orderManager!);
+        setRAres(props.isEdit != true ? "" : props.orderData?.activity.ricezioneAlluminio.activityManager!);
+        setRVres(props.isEdit != true ? "" : props.orderData?.activity.ricezioneVetri.activityManager!);
+        setTAGRes(props.isEdit != true ? "" : props.orderData?.activity.taglio.activityManager!);
+        setLAVres(props.isEdit != true ? "" : props.orderData?.activity.lavorazione.activityManager!);
+        setASSres(props.isEdit != true ? "" : props.orderData?.activity.assemblaggio.activityManager!);
+        setIVres(props.isEdit != true ? "" : props.orderData?.activity.installazioneVetri.activityManager!);
+        setIMres(props.isEdit != true ? "" : props.orderData?.activity.imballaggio.activityManager!);
+        setTRAres(props.isEdit != true ? "" : props.orderData?.activity.trasporto.activityManager!);
+        setDELres(props.isEdit != true ? "" : props.orderData?.activity.consegnaInstallazione.activityManager!);
     }
 
     const orderData = {
@@ -533,7 +548,11 @@ const AddOrderForm = (props: Props) => {
                 </div>
                 <div className='flex justify-center md:justify-end my-4 mr-10 gap-4'>
                     <p onClick={() => resetFields()} className='btn btn-warning btn-lg rounded-xl'>Annulla</p>
-                    <button type='submit' className='btn btn-info btn-lg rounded-xl'>Aggiungi</button>
+                    {
+                        props.isEdit ? <button type='submit' className='btn btn-info btn-lg rounded-xl'>Modifica</button> :
+                            <button type='submit' className='btn btn-success btn-lg rounded-xl'>Aggiungi</button>
+                    }
+
                 </div>
             </form>
         </div>

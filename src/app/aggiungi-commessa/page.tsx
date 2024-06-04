@@ -45,7 +45,7 @@ const Page = (props: Props) => {
     if (isLoading) {
         return (<div className="flex justify-center"><span className="loading loading-bars loading-lg"></span></div>)
     } else {
-        return (<div className="flex justify-center flex-col"><AddOrderForm /></div>)
+        return (<div className="flex justify-center flex-col"><AddOrderForm isEdit={false} /></div>)
     };
 }
 

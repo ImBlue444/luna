@@ -37,7 +37,7 @@ type Props = {
 const AdminOrderList = (props: Props) => {
     return (
 
-        <div className="overflow-x-auto px-8">
+        <div className="overflow-x-auto">
             <table className="table">
                 <thead>
                     <tr>
