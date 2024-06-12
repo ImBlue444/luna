@@ -6,10 +6,12 @@ import { IoIosMail } from "react-icons/io";
 import { IoMailOutline } from "react-icons/io5";
 import { useRouter } from 'next/navigation';
 import { intlFormatDistance, isPast } from "date-fns";
+import Timer from './Timer';
 import NoteModal from './NoteModal';
 import { changeStatus, completeActivity } from '@/utils/libs/crud';
 import { ToastContainer, toast } from 'react-toastify';
 import Progress from './OrderElements/Progress';
+import axios from 'axios';
 
 interface Order {
     activity: {
@@ -68,6 +70,10 @@ const Order = (props: Props) => {
         });
         return completedCount;
     };
+
+    const archiveOrder = () => {
+        axios.post(`${process.env.NEXT_PUBLIC_LUNA_BASE_URL}/archive/${props.orderData._id}`)
+    }
 
 
     const handleChangeRAstat = (event: { target: any }) => {
@@ -170,6 +176,18 @@ const Order = (props: Props) => {
         }
     };
 
+    const handleUrgency = () => {
+        if (props.orderData.urgency === 'Alta') {
+            return ("border-red-500");
+        } else if (props.orderData.urgency === 'Media') {
+            return ("border-yellow-500");
+        } else if (props.orderData.urgency === 'Bassa') {
+            return ("border-blue-500");
+        } else if (props.orderData.urgency === 'Urgente') {
+            return ("border-red-500");
+        }
+    }
+
 
     const handleTargetLabel = (days: number) => {
         if (days < 0) {
@@ -196,7 +214,7 @@ const Order = (props: Props) => {
             <NoteModal note={props.orderData.activity.consegnaInstallazione.note} id={props.orderData._id} label='Consegna e/o installazione' activity='consegnaInstallazione' />
 
             <div className=' card my-4 py-4 px-8 mx-8 rounded-xl md:text-3xl bg-slate-100 border border-black'>
-                <div className='flex flex-col md:flex-row items-center md:justify-between text-center gap-4 mb-8 rounded-xl p-4 border border-black '>
+                <div className={`flex flex-col md:flex-row items-center md:justify-between text-center gap-4 mb-8 rounded-xl p-4 border-4 ${handleUrgency()}`}>
                     <div>
                         <p className='font-bold'>Commessa</p>
                         <p className=' text-center text-2xl'>{props.orderData.orderName}</p>
@@ -243,7 +261,7 @@ const Order = (props: Props) => {
                                             ))}
                                         </select>
                                     </td>
-                                    <td>{intlFormatDistance(props.orderData.activity.ricezioneAlluminio.expire, new Date(), { "locale": "it" })}</td>
+                                    <td className='max-w-28'>{props ? <Timer targetDate={props.orderData.activity.ricezioneAlluminio.expire} /> : ""}</td>
                                     <td>{handleTargetLabel(differenceInDays(props.orderData.activity.ricezioneAlluminio.expire, new Date()))}</td>
                                     <td>
                                         <div>
@@ -269,7 +287,7 @@ const Order = (props: Props) => {
                                             ))}
                                         </select>
                                     </td>
-                                    <td>{props ? intlFormatDistance(props.orderData.activity.ricezioneVetri.expire, new Date(), { "locale": "it" }) : ""}</td>
+                                    <td className='max-w-28'>{props ? <Timer targetDate={props.orderData.activity.ricezioneVetri.expire} /> : ""}</td>
                                     <td>{handleTargetLabel(differenceInDays(props.orderData.activity.ricezioneVetri.expire, new Date()))}</td>
                                     <td>
                                         <div>
@@ -295,7 +313,7 @@ const Order = (props: Props) => {
                                             ))}
                                         </select>
                                     </td>
-                                    <td>{intlFormatDistance(props.orderData.activity.taglio.expire, new Date(), { "locale": "it" })}</td>
+                                    <td className='max-w-28'>{props ? <Timer targetDate={props.orderData.activity.taglio.expire} /> : ""}</td>
                                     <td>{handleTargetLabel(differenceInDays(props.orderData.activity.taglio.expire, new Date()))}</td>
                                     <td>
                                         <div>
@@ -319,7 +337,7 @@ const Order = (props: Props) => {
                                             ))}
                                         </select>
                                     </td>
-                                    <td>{intlFormatDistance(props.orderData.activity.lavorazione.expire, new Date(), { "locale": "it" })}</td>
+                                    <td className='max-w-28'>{props ? <Timer targetDate={props.orderData.activity.lavorazione.expire} /> : ""}</td>
                                     <td>{handleTargetLabel(differenceInDays(props.orderData.activity.lavorazione.expire, new Date()))}</td>
                                     <td>
                                         <div>
@@ -343,7 +361,7 @@ const Order = (props: Props) => {
                                             ))}
                                         </select>
                                     </td>
-                                    <td>{intlFormatDistance(props.orderData.activity.assemblaggio.expire, new Date(), { "locale": "it" })}</td>
+                                    <td className='max-w-28'>{props ? <Timer targetDate={props.orderData.activity.assemblaggio.expire} /> : ""}</td>
                                     <td>{handleTargetLabel(differenceInDays(props.orderData.activity.assemblaggio.expire, new Date()))}</td>
                                     <td>
                                         <div>
@@ -368,7 +386,7 @@ const Order = (props: Props) => {
                                             ))}
                                         </select>
                                     </td>
-                                    <td>{intlFormatDistance(props.orderData.activity.installazioneVetri.expire, new Date(), { "locale": "it" })}</td>
+                                    <td className='max-w-28'>{props ? <Timer targetDate={props.orderData.activity.installazioneVetri.expire} /> : ""}</td>
                                     <td>{handleTargetLabel(differenceInDays(props.orderData.activity.installazioneVetri.expire, new Date()))}</td>
                                     <td>
                                         <div>
@@ -394,7 +412,7 @@ const Order = (props: Props) => {
                                             ))}
                                         </select>
                                     </td>
-                                    <td>{intlFormatDistance(props.orderData.activity.imballaggio.expire, new Date(), { "locale": "it" })}</td>
+                                    <td className='max-w-28'>{props ? <Timer targetDate={props.orderData.activity.imballaggio.expire} /> : ""}</td>
                                     <td>{handleTargetLabel(differenceInDays(props.orderData.activity.imballaggio.expire, new Date()))}</td>
                                     <td>
                                         <div>
@@ -419,7 +437,7 @@ const Order = (props: Props) => {
                                             ))}
                                         </select>
                                     </td>
-                                    <td>{intlFormatDistance(props.orderData.activity.trasporto.expire, new Date(), { "locale": "it" })}</td>
+                                    <td className='max-w-28'>{props ? <Timer targetDate={props.orderData.activity.trasporto.expire} /> : ""}</td>
                                     <td>{handleTargetLabel(differenceInDays(props.orderData.activity.trasporto.expire, new Date()))}</td>
                                     <td>
                                         <div>
@@ -444,7 +462,7 @@ const Order = (props: Props) => {
                                             ))}
                                         </select>
                                     </td>
-                                    <td>{intlFormatDistance(props.orderData.activity.consegnaInstallazione.expire, new Date(), { "locale": "it" })}</td>
+                                    <td className='max-w-28'>{props ? <Timer targetDate={props.orderData.activity.consegnaInstallazione.expire} /> : ""}</td>
                                     <td>
                                         {handleTargetLabel(differenceInDays(props.orderData.activity.consegnaInstallazione.expire, new Date()))}
                                     </td>
@@ -465,7 +483,7 @@ const Order = (props: Props) => {
                 </div>
                 <div className='flex justify-between items-center center my-4'>
                     <Progress progressValue={getCompletedActivitiesCount(props.orderData)} />
-                    <button disabled={getCompletedActivitiesCount(props.orderData) >= 9 ? false : true} className={`btn btn-success rounded-lg w-1/4 shadow-xl`}>Archivia</button>
+                    <button disabled={getCompletedActivitiesCount(props.orderData) >= 9 ? false : true} onClick={() => archiveOrder()} className={`btn btn-success rounded-lg w-1/4 shadow-xl`}>Archivia</button>
                 </div>
             </div>
         </>

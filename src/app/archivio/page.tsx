@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { redirect } from 'next/navigation';
 import React, { useLayoutEffect, useState } from 'react'
+import ArchiveTable from '@/components/tables/ArchiveTable';
 
 type Props = {}
 
@@ -44,7 +45,7 @@ const Page = (props: Props) => {
     if (isLoading) {
         return (<div className="flex justify-center"><span className="loading loading-bars loading-lg"></span></div>)
     } else {
-        return (<div className="flex justify-center flex-col">Archivio</div>)
+        return (<div className="flex justify-center flex-col"><ArchiveTable /></div>)
     };
 }
 
