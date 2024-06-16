@@ -44,13 +44,25 @@ const AddOrderForm = (props: Props) => {
     const [TRAres, setTRAres] = useState(props.isEdit != true ? "" : props.orderData?.activity.trasporto.activityManager!);
     const [DELres, setDELres] = useState(props.isEdit != true ? "" : props.orderData?.activity.consegnaInstallazione.activityManager!);
 
+    //Note states
+
+    const [RANote, setRANote] = useState(props.isEdit != true ? "" : props.orderData?.activity.ricezioneAlluminio.note);
+    const [RVNote, setRVNote] = useState(props.isEdit != true ? "" : props.orderData?.activity.ricezioneVetri.note);
+    const [TAGNote, setTAGNote] = useState(props.isEdit != true ? "" : props.orderData?.activity.taglio.note);
+    const [LAVNote, setLAVNote] = useState(props.isEdit != true ? "" : props.orderData?.activity.lavorazione.note);
+    const [ASSNote, setASSNote] = useState(props.isEdit != true ? "" : props.orderData?.activity.assemblaggio.note);
+    const [IVNote, setIVNote] = useState(props.isEdit != true ? "" : props.orderData?.activity.installazioneVetri.note);
+    const [IMNote, setIMNote] = useState(props.isEdit != true ? "" : props.orderData?.activity.imballaggio.note);
+    const [TRANote, setTRANote] = useState(props.isEdit != true ? "" : props.orderData?.activity.trasporto.note);
+    const [DELNote, setDELNote] = useState(props.isEdit != true ? "" : props.orderData?.activity.consegnaInstallazione.note);
+
     const notifySuccess = (text: string) => toast.success(text);
     const notifyError = (text: string) => toast.error(text);
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (props.isEdit) {
-            axios.put(`${process.env.NEXT_PUBLIC_LUNA_BASE_URL}/orders/${props.orderData?._id}`, orderData)
+            axios.patch(`${process.env.NEXT_PUBLIC_LUNA_BASE_URL}/orders/${props.orderData?._id}`, orderData)
                 .then(function (response) {
                     if (response.status === 200) {
                         notifySuccess("Commessa modificata con successo!")
@@ -109,38 +121,47 @@ const AddOrderForm = (props: Props) => {
             ricezioneAlluminio: {
                 expire: ricAllDate,
                 activityManager: RAres,
+                note: RANote
             },
             ricezioneVetri: {
                 expire: ricVetDate,
                 activityManager: RVres,
+                note: RVNote
             },
             taglio: {
                 expire: taglioDate,
                 activityManager: TAGRes,
+                note: TAGNote
             },
             lavorazione: {
                 expire: lavorazioneDate,
                 activityManager: LAVres,
+                note: LAVNote
             },
             assemblaggio: {
                 expire: assemblaggioDate,
                 activityManager: ASSres,
+                note: ASSNote
             },
             installazioneVetri: {
                 expire: instVetri,
                 activityManager: IVres,
+                note: IVNote
             },
             imballaggio: {
                 expire: imballaggioDate,
                 activityManager: IMres,
+                note: IMNote
             },
             trasporto: {
                 expire: transportDate,
                 activityManager: TRAres,
+                note: TRANote
             },
             consegnaInstallazione: {
                 expire: delivInstDate,
                 activityManager: DELres,
+                note: DELNote
             },
         },
     };

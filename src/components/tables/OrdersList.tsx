@@ -1,31 +1,68 @@
-'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import Order from '../elements/Order';
 import axios from 'axios';
 
 type Props = {};
 
+interface Orders {
+    activity: {
+        [key: string]: Activity;
+        ricezioneAlluminio: Activity;
+        ricezioneVetri: Activity;
+        taglio: Activity;
+        lavorazione: Activity;
+        assemblaggio: Activity;
+        installazioneVetri: Activity;
+        imballaggio: Activity;
+        trasporto: Activity;
+        consegnaInstallazione: Activity;
+    };
+    _id: string;
+    orderName: string;
+    materialShelf: string;
+    priority: number;
+    urgency: string;
+    orderManager: string;
+    note?: string;
+    __v: number;
+}
 
-const OrdersList = (props: Props) => {
-    const [orders, setOrders] = useState([]);
+interface Activity {
+    expire: string;
+    status: string;
+    note: string;
+    completed: string | null;
+    activityManager: string;
+}
+
+const OrdersList = () => {
+    const [orders, setOrders] = useState<Orders[]>([]);
+
     useEffect(() => {
+        fetchOrders();
+    }, []);
+
+    const fetchOrders = () => {
         axios.get(`${process.env.NEXT_PUBLIC_LUNA_BASE_URL}/orders`)
             .then(function (response) {
-                setOrders(response.data);
+                const sortedOrders = response.data.sort((a: Orders, b: Orders) => {
+                    const priorityOrder: { [key: string]: number } = { 'Bassa': 1, 'Media': 2, 'Alta': 3, 'Urgente': 4 };
+                    return priorityOrder[b.urgency] - priorityOrder[a.urgency]; // Ordine discendente per urgency
+                });
+                setOrders(sortedOrders);
             })
             .catch(function (error) {
                 console.log(error);
-            })
-    }, [])
-
+            });
+    };
 
     return (
         <div>
-            <div className='flex flex-col gap-14'>
+            <div className='flex flex-col gap-7 mt-4'>
                 {orders.map((order, index) => <div key={index}><Order orderData={order} /></div>)}
             </div>
         </div>
-    )
+    );
 }
 
-export default OrdersList
+export default OrdersList;

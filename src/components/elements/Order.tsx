@@ -32,6 +32,7 @@ interface Order {
     priority: number;
     urgency: string;
     orderManager: string;
+    note?: string;
     __v: number;
 }
 
@@ -213,28 +214,28 @@ const Order = (props: Props) => {
             <NoteModal note={props.orderData.activity.trasporto.note} id={props.orderData._id} label='Trasporto' activity='trasporto' />
             <NoteModal note={props.orderData.activity.consegnaInstallazione.note} id={props.orderData._id} label='Consegna e/o installazione' activity='consegnaInstallazione' />
 
-            <div className=' card my-4 py-4 px-8 mx-8 rounded-xl md:text-3xl bg-slate-100 border border-black'>
+            <div className=' card my-2 py-2 px-6 mx-6 rounded-xl md:text-lg bg-slate-100 border border-black'>
                 <div className={`flex flex-col md:flex-row items-center md:justify-between text-center gap-4 mb-8 rounded-xl p-4 border-4 ${handleUrgency()}`}>
                     <div>
                         <p className='font-bold'>Commessa</p>
-                        <p className=' text-center text-2xl'>{props.orderData.orderName}</p>
+                        <p className=' text-center text-lg'>{props.orderData.orderName}</p>
                     </div>
                     <div>
                         <p className='font-bold'>Priorità</p>
-                        <p className=' text-center text-2xl'>{props.orderData.urgency}</p>
+                        <p className=' text-center text-lg'>{props.orderData.urgency}</p>
                     </div>
                     <div>
                         <p className='font-bold'>Cronologico</p>
-                        <p className=' text-center text-2xl'>{props.orderData.priority}</p>
+                        <p className=' text-center text-lg'>{props.orderData.priority}</p>
                     </div>
                     <div>
                         <p className='font-bold'>Scaffa materiale</p>
-                        <p className=' text-center text-2xl'>{props.orderData.materialShelf}</p>
+                        <p className=' text-center text-lg'>{props.orderData.materialShelf}</p>
                     </div>
                 </div>
                 <div>
                     <div className="overflow-x-auto">
-                        <table className="table table-auto text-center text-md md:text-xl">
+                        <table className="table table-sm text-center text-md md:text-lg">
                             <thead>
                                 <tr className='text-lg font-bold text-center'>
                                     <th>Attività</th>
@@ -256,6 +257,7 @@ const Order = (props: Props) => {
                                     <td>{props.orderData.activity.ricezioneAlluminio.completed ? new Date(props.orderData.activity.ricezioneAlluminio.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : '--'}</td>
                                     <td>
                                         <select disabled={RAstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={RAstat} onChange={handleChangeRAstat}>
+                                            <option className={`${RAstat != "Standby" ? "hidden" : ""}`} value={"Standby"}>Standby</option>
                                             {status.map((status, index) => (
                                                 <option key={index} value={status.value}>{status.label}</option>
                                             ))}
@@ -282,6 +284,7 @@ const Order = (props: Props) => {
                                     <td>{props.orderData.activity.ricezioneVetri.completed ? new Date(props.orderData.activity.ricezioneVetri.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
                                         <select disabled={RVstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={RVstat} onChange={handleChangeRVstat}>
+                                            <option className={`${RVstat != "Standby" ? "hidden" : ""}`} value={"Standby"}>Standby</option>
                                             {status.map((status, index) => (
                                                 <option key={index} value={status.value}>{status.label}</option>
                                             ))}
@@ -308,6 +311,7 @@ const Order = (props: Props) => {
                                     <td>{props.orderData.activity.taglio.completed ? new Date(props.orderData.activity.taglio.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
                                         <select disabled={TAGstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={TAGstat} onChange={handleChangeTAGstat}>
+                                            <option className={`${TAGstat != "Standby" ? "hidden" : ""}`} value={"Standby"}>Standby</option>
                                             {status.map((status, index) => (
                                                 <option key={index} value={status.value}>{status.label}</option>
                                             ))}
@@ -332,6 +336,7 @@ const Order = (props: Props) => {
                                     <td>{props.orderData.activity.lavorazione.completed ? new Date(props.orderData.activity.lavorazione.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
                                         <select disabled={LAVstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={LAVstat} onChange={handleChangeLAVstat}>
+                                            <option className={`${LAVstat != "Standby" ? "hidden" : ""}`} value={"Standby"}>Standby</option>
                                             {status.map((status, index) => (
                                                 <option key={index} value={status.value}>{status.label}</option>
                                             ))}
@@ -356,6 +361,7 @@ const Order = (props: Props) => {
                                     <td>{props.orderData.activity.assemblaggio.completed ? new Date(props.orderData.activity.assemblaggio.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
                                         <select disabled={ASSstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={ASSstat} onChange={handleChangeASSstat}>
+                                            <option className={`${ASSstat != "Standby" ? "hidden" : ""}`} value={"Standby"}>Standby</option>
                                             {status.map((status, index) => (
                                                 <option key={index} value={status.value}>{status.label}</option>
                                             ))}
@@ -381,6 +387,7 @@ const Order = (props: Props) => {
                                     <td>{props.orderData.activity.installazioneVetri.completed ? new Date(props.orderData.activity.installazioneVetri.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
                                         <select disabled={IVstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={IVstat} onChange={handleChangeIVstat}>
+                                            <option className={`${IVstat != "Standby" ? "hidden" : ""}`} value={"Standby"}>Standby</option>
                                             {status.map((status, index) => (
                                                 <option key={index} value={status.value}>{status.label}</option>
                                             ))}
@@ -407,6 +414,7 @@ const Order = (props: Props) => {
                                     <td>{props.orderData.activity.imballaggio.completed ? new Date(props.orderData.activity.imballaggio.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
                                         <select disabled={IMstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={IMstat} onChange={handleChangeIMstat}>
+                                            <option className={`${IMstat != "Standby" ? "hidden" : ""}`} value={"Standby"}>Standby</option>
                                             {status.map((status, index) => (
                                                 <option key={index} value={status.value}>{status.label}</option>
                                             ))}
@@ -432,6 +440,7 @@ const Order = (props: Props) => {
                                     <td>{props.orderData.activity.trasporto.completed ? new Date(props.orderData.activity.trasporto.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
                                         <select disabled={TRAstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={TRAstat} onChange={handleChangeTRAstat}>
+                                            <option className={`${TRAstat != "Standby" ? "hidden" : ""}`} value={"Standby"}>Standby</option>
                                             {status.map((status, index) => (
                                                 <option key={index} value={status.value}>{status.label}</option>
                                             ))}
@@ -457,6 +466,7 @@ const Order = (props: Props) => {
                                     <td>{props.orderData.activity.consegnaInstallazione.completed ? new Date(props.orderData.activity.consegnaInstallazione.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
                                         <select disabled={DELstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={DELstat} onChange={handleChangeDELstat}>
+                                            <option className={`${DELstat != "Standby" ? "hidden" : ""}`} value={"Standby"}>Standby</option>
                                             {status.map((status, index) => (
                                                 <option key={index} value={status.value}>{status.label}</option>
                                             ))}

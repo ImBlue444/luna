@@ -59,7 +59,7 @@ const ArchiveTable = (props: Props) => {
                 </thead>
                 <tbody>
                     {archive && archive.map((order: Order) => (
-                        <tr>
+                        <tr key={order._id}>
                             <td>{order.orderName}</td>
                             <td>{order.orderManager}</td>
                             <td>{order.priority}</td>
