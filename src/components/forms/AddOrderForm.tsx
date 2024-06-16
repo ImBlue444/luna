@@ -56,6 +56,18 @@ const AddOrderForm = (props: Props) => {
     const [TRANote, setTRANote] = useState(props.isEdit != true ? "" : props.orderData?.activity.trasporto.note);
     const [DELNote, setDELNote] = useState(props.isEdit != true ? "" : props.orderData?.activity.consegnaInstallazione.note);
 
+    //Status states
+
+    const [RAstat, setRAstat] = useState(props.isEdit != true ? "Standby" : props.orderData?.activity.ricezioneAlluminio.status);
+    const [RVstat, setRVstat] = useState(props.isEdit != true ? "Standby" : props.orderData?.activity.ricezioneVetri.status);
+    const [TAGstat, setTAGstat] = useState(props.isEdit != true ? "Standby" : props.orderData?.activity.taglio.status);
+    const [LAVstat, setLAVstat] = useState(props.isEdit != true ? "Standby" : props.orderData?.activity.lavorazione.status);
+    const [ASSstat, setASSstat] = useState(props.isEdit != true ? "Standby" : props.orderData?.activity.assemblaggio.status);
+    const [IVstat, setIVstat] = useState(props.isEdit != true ? "Standby" : props.orderData?.activity.installazioneVetri.status);
+    const [IMstat, setIMstat] = useState(props.isEdit != true ? "Standby" : props.orderData?.activity.imballaggio.status);
+    const [TRAstat, setTRAstat] = useState(props.isEdit != true ? "Standby" : props.orderData?.activity.trasporto.status);
+    const [DELstat, setDELstat] = useState(props.isEdit != true ? "Standby" : props.orderData?.activity.consegnaInstallazione.status);
+
     const notifySuccess = (text: string) => toast.success(text);
     const notifyError = (text: string) => toast.error(text);
 
@@ -120,46 +132,55 @@ const AddOrderForm = (props: Props) => {
         activity: {
             ricezioneAlluminio: {
                 expire: ricAllDate,
+                status: RAstat,
                 activityManager: RAres,
                 note: RANote
             },
             ricezioneVetri: {
                 expire: ricVetDate,
+                status: RVstat,
                 activityManager: RVres,
                 note: RVNote
             },
             taglio: {
                 expire: taglioDate,
+                status: TAGstat,
                 activityManager: TAGRes,
                 note: TAGNote
             },
             lavorazione: {
                 expire: lavorazioneDate,
+                status: LAVstat,
                 activityManager: LAVres,
                 note: LAVNote
             },
             assemblaggio: {
                 expire: assemblaggioDate,
+                status: ASSstat,
                 activityManager: ASSres,
                 note: ASSNote
             },
             installazioneVetri: {
                 expire: instVetri,
+                status: IVstat,
                 activityManager: IVres,
                 note: IVNote
             },
             imballaggio: {
                 expire: imballaggioDate,
+                status: IMstat,
                 activityManager: IMres,
                 note: IMNote
             },
             trasporto: {
                 expire: transportDate,
+                status: TRAstat,
                 activityManager: TRAres,
                 note: TRANote
             },
             consegnaInstallazione: {
                 expire: delivInstDate,
+                status: DELstat,
                 activityManager: DELres,
                 note: DELNote
             },

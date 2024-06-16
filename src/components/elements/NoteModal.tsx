@@ -36,7 +36,7 @@ const NoteModal = (props: Props) => {
     return (
         <div>{/* Open the modal using document.getElementById('ID').showModal() method */}
             {/* <button className="btn" onClick={() => document.getElementById('my_modal_5').showModal()}>open modal</button> */}
-            <dialog id={`modal_${props.activity}`} className="modal modal-bottom sm:modal-middle">
+            <dialog id={`modal_${props.activity}_${props.id}`} className="modal modal-bottom sm:modal-middle">
                 <div className="modal-box">
                     <h3 className="font-bold text-lg">{"Inserire nota per: "}  <b>{" " + props.label}</b></h3>
                     <div className='flex'>

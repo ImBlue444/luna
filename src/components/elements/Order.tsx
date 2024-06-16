@@ -1,15 +1,13 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { status } from '@/utils/enums/status'
-import { differenceInDays } from "date-fns";
 import { IoIosMail } from "react-icons/io";
 import { IoMailOutline } from "react-icons/io5";
-import { useRouter } from 'next/navigation';
-import { intlFormatDistance, isPast } from "date-fns";
+import { differenceInMinutes } from "date-fns";
 import Timer from './Timer';
 import NoteModal from './NoteModal';
 import { changeStatus, completeActivity } from '@/utils/libs/crud';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import Progress from './OrderElements/Progress';
 import axios from 'axios';
 
@@ -49,7 +47,6 @@ type Props = {
 }
 
 const Order = (props: Props) => {
-    const router = useRouter();
 
     const [RAstat, setRAstat] = useState(props.orderData.activity.ricezioneAlluminio.status);
     const [RVstat, setRVstat] = useState(props.orderData.activity.ricezioneVetri.status);
@@ -179,9 +176,9 @@ const Order = (props: Props) => {
 
     const handleUrgency = () => {
         if (props.orderData.urgency === 'Alta') {
-            return ("border-red-500");
-        } else if (props.orderData.urgency === 'Media') {
             return ("border-yellow-500");
+        } else if (props.orderData.urgency === 'Media') {
+            return ("border-green-500");
         } else if (props.orderData.urgency === 'Bassa') {
             return ("border-blue-500");
         } else if (props.orderData.urgency === 'Urgente') {
@@ -190,13 +187,20 @@ const Order = (props: Props) => {
     }
 
 
-    const handleTargetLabel = (days: number) => {
-        if (days < 0) {
-            return (<button className=' w-full btn rounded-xl btn-error'>Ritardo</button>);
-        } else if (days > 0) {
-            return (<button className=' w-full btn rounded-xl btn-accent'>Anticipo</button>);
-        } else if (days === 0) {
-            return (<button className=' w-full btn rounded-xl btn-info'>OK</button>);
+    const handleTargetLabel = (expire: string, completed: string | null) => {
+        if (completed) {
+            if (Math.abs(differenceInMinutes(expire, completed)) < 5) {
+                return (<button onClick={() => console.log(differenceInMinutes(expire, completed))} className=' w-full cursor-default btn rounded-xl btn-info'>OK</button>)
+            }
+            else if (expire > completed) {
+                return (<button className=' w-full cursor-default btn rounded-xl btn-accent'>{"Anticipo di " + Math.abs(differenceInMinutes(expire, completed)) + " minuti"}</button>)
+            }
+            else if (expire < completed) {
+                return (<button className=' w-full cursor-default btn rounded-xl btn-error'>{"Ritardo di " + Math.abs(differenceInMinutes(expire, completed)) + " minuti"}</button>)
+            }
+        }
+        else {
+            return (<Timer targetDate={expire} />)
         }
     };
 
@@ -242,8 +246,7 @@ const Order = (props: Props) => {
                                     <th>Scadenza</th>
                                     <th>Completato</th>
                                     <th>Stato</th>
-                                    <th>Timer</th>
-                                    <th>Obbiettivo</th>
+                                    <th>Obiettivo</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -263,13 +266,12 @@ const Order = (props: Props) => {
                                             ))}
                                         </select>
                                     </td>
-                                    <td className='max-w-28'>{props ? <Timer targetDate={props.orderData.activity.ricezioneAlluminio.expire} /> : ""}</td>
-                                    <td>{handleTargetLabel(differenceInDays(props.orderData.activity.ricezioneAlluminio.expire, new Date()))}</td>
+                                    <td>{handleTargetLabel(props.orderData.activity.ricezioneAlluminio.expire, props.orderData.activity.ricezioneAlluminio.completed)}</td>
                                     <td>
                                         <div>
                                             {props?.orderData?.activity?.ricezioneAlluminio?.note?.trim() !== '' ?
-                                                <IoIosMail className='cursor-pointer' onClick={() => { (document.getElementById('modal_ricezioneAlluminio') as HTMLDialogElement | null)?.showModal(); }} size={32} /> :
-                                                <IoMailOutline className='cursor-pointer' onClick={() => { (document.getElementById('modal_ricezioneAlluminio') as HTMLDialogElement | null)?.showModal(); }} size={32} />}
+                                                <IoIosMail className='cursor-pointer' onClick={() => { (document.getElementById('modal_ricezioneAlluminio_' + props.orderData._id) as HTMLDialogElement | null)?.showModal(); }} size={32} /> :
+                                                <IoMailOutline className='cursor-pointer' onClick={() => { (document.getElementById('modal_ricezioneAlluminio_' + props.orderData._id) as HTMLDialogElement | null)?.showModal(); }} size={32} />}
                                         </div>
                                     </td>
                                 </tr>
@@ -290,13 +292,12 @@ const Order = (props: Props) => {
                                             ))}
                                         </select>
                                     </td>
-                                    <td className='max-w-28'>{props ? <Timer targetDate={props.orderData.activity.ricezioneVetri.expire} /> : ""}</td>
-                                    <td>{handleTargetLabel(differenceInDays(props.orderData.activity.ricezioneVetri.expire, new Date()))}</td>
+                                    <td>{handleTargetLabel(props.orderData.activity.ricezioneVetri.expire, props.orderData.activity.ricezioneVetri.completed)}</td>
                                     <td>
                                         <div>
                                             {props?.orderData?.activity?.ricezioneVetri?.note?.trim() !== '' ?
-                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_ricezioneVetri') as HTMLDialogElement | null)?.showModal()} size={32} /> :
-                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_ricezioneVetri') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_ricezioneVetri_' + props.orderData._id) as HTMLDialogElement | null)?.showModal()} size={32} /> :
+                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_ricezioneVetri_' + props.orderData._id) as HTMLDialogElement | null)?.showModal()} size={32} />
                                             }
                                         </div>
                                     </td>
@@ -317,13 +318,12 @@ const Order = (props: Props) => {
                                             ))}
                                         </select>
                                     </td>
-                                    <td className='max-w-28'>{props ? <Timer targetDate={props.orderData.activity.taglio.expire} /> : ""}</td>
-                                    <td>{handleTargetLabel(differenceInDays(props.orderData.activity.taglio.expire, new Date()))}</td>
+                                    <td>{handleTargetLabel(props.orderData.activity.taglio.expire, props.orderData.activity.taglio.completed)}</td>
                                     <td>
                                         <div>
                                             {props?.orderData?.activity?.taglio?.note?.trim() !== '' ?
-                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_taglio') as HTMLDialogElement | null)?.showModal()} size={32} /> :
-                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_taglio') as HTMLDialogElement | null)?.showModal()} size={32} />}
+                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_taglio_' + props.orderData._id) as HTMLDialogElement | null)?.showModal()} size={32} /> :
+                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_taglio_' + props.orderData._id) as HTMLDialogElement | null)?.showModal()} size={32} />}
                                         </div>
                                     </td>
                                 </tr>
@@ -342,13 +342,12 @@ const Order = (props: Props) => {
                                             ))}
                                         </select>
                                     </td>
-                                    <td className='max-w-28'>{props ? <Timer targetDate={props.orderData.activity.lavorazione.expire} /> : ""}</td>
-                                    <td>{handleTargetLabel(differenceInDays(props.orderData.activity.lavorazione.expire, new Date()))}</td>
+                                    <td>{handleTargetLabel(props.orderData.activity.lavorazione.expire, props.orderData.activity.lavorazione.completed)}</td>
                                     <td>
                                         <div>
                                             {props?.orderData?.activity?.lavorazione?.note?.trim() !== '' ?
-                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_lavorazione') as HTMLDialogElement | null)?.showModal()} size={32} /> :
-                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_lavorazione') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_lavorazione_' + props.orderData._id) as HTMLDialogElement | null)?.showModal()} size={32} /> :
+                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_lavorazione_' + props.orderData._id) as HTMLDialogElement | null)?.showModal()} size={32} />
                                             }</div>
                                     </td>
                                 </tr>
@@ -367,13 +366,12 @@ const Order = (props: Props) => {
                                             ))}
                                         </select>
                                     </td>
-                                    <td className='max-w-28'>{props ? <Timer targetDate={props.orderData.activity.assemblaggio.expire} /> : ""}</td>
-                                    <td>{handleTargetLabel(differenceInDays(props.orderData.activity.assemblaggio.expire, new Date()))}</td>
+                                    <td>{handleTargetLabel(props.orderData.activity.assemblaggio.expire, props.orderData.activity.assemblaggio.completed)}</td>
                                     <td>
                                         <div>
                                             {props?.orderData?.activity?.assemblaggio?.note?.trim() !== '' ?
-                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_assemblaggio') as HTMLDialogElement | null)?.showModal()} size={32} /> :
-                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_assemblaggio') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_assemblaggio_' + props.orderData._id) as HTMLDialogElement | null)?.showModal()} size={32} /> :
+                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_assemblaggio_' + props.orderData._id) as HTMLDialogElement | null)?.showModal()} size={32} />
                                             }
                                         </div>
                                     </td>
@@ -393,14 +391,13 @@ const Order = (props: Props) => {
                                             ))}
                                         </select>
                                     </td>
-                                    <td className='max-w-28'>{props ? <Timer targetDate={props.orderData.activity.installazioneVetri.expire} /> : ""}</td>
-                                    <td>{handleTargetLabel(differenceInDays(props.orderData.activity.installazioneVetri.expire, new Date()))}</td>
+                                    <td>{handleTargetLabel(props.orderData.activity.installazioneVetri.expire, props.orderData.activity.installazioneVetri.completed)}</td>
                                     <td>
                                         <div>
                                             {
                                                 props?.orderData?.activity?.installazioneVetri?.note?.trim() !== '' ?
-                                                    <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_installazioneVetri') as HTMLDialogElement | null)?.showModal()} size={32} /> :
-                                                    <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_installazioneVetri') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                                    <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_installazioneVetri_' + props.orderData._id) as HTMLDialogElement | null)?.showModal()} size={32} /> :
+                                                    <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_installazioneVetri_' + props.orderData._id) as HTMLDialogElement | null)?.showModal()} size={32} />
                                             }
                                         </div>
                                     </td>
@@ -420,13 +417,12 @@ const Order = (props: Props) => {
                                             ))}
                                         </select>
                                     </td>
-                                    <td className='max-w-28'>{props ? <Timer targetDate={props.orderData.activity.imballaggio.expire} /> : ""}</td>
-                                    <td>{handleTargetLabel(differenceInDays(props.orderData.activity.imballaggio.expire, new Date()))}</td>
+                                    <td>{handleTargetLabel(props.orderData.activity.imballaggio.expire, props.orderData.activity.imballaggio.completed)}</td>
                                     <td>
                                         <div>
                                             {props?.orderData?.activity?.imballaggio?.note?.trim() !== '' ?
-                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_imballaggio') as HTMLDialogElement | null)?.showModal()} size={32} /> :
-                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_imballaggio') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_imballaggio_' + props.orderData._id) as HTMLDialogElement | null)?.showModal()} size={32} /> :
+                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_imballaggio_' + props.orderData._id) as HTMLDialogElement | null)?.showModal()} size={32} />
                                             }
                                         </div>
                                     </td>
@@ -446,13 +442,12 @@ const Order = (props: Props) => {
                                             ))}
                                         </select>
                                     </td>
-                                    <td className='max-w-28'>{props ? <Timer targetDate={props.orderData.activity.trasporto.expire} /> : ""}</td>
-                                    <td>{handleTargetLabel(differenceInDays(props.orderData.activity.trasporto.expire, new Date()))}</td>
+                                    <td>{handleTargetLabel(props.orderData.activity.trasporto.expire, props.orderData.activity.trasporto.completed)}</td>
                                     <td>
                                         <div>
                                             {props?.orderData?.activity?.trasporto?.note?.trim() !== '' ?
-                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_trasporto') as HTMLDialogElement | null)?.showModal()} size={32} /> :
-                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_trasporto') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_trasporto_' + props.orderData._id) as HTMLDialogElement | null)?.showModal()} size={32} /> :
+                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_trasporto_' + props.orderData._id) as HTMLDialogElement | null)?.showModal()} size={32} />
                                             }
                                         </div>
                                     </td>
@@ -472,15 +467,14 @@ const Order = (props: Props) => {
                                             ))}
                                         </select>
                                     </td>
-                                    <td className='max-w-28'>{props ? <Timer targetDate={props.orderData.activity.consegnaInstallazione.expire} /> : ""}</td>
                                     <td>
-                                        {handleTargetLabel(differenceInDays(props.orderData.activity.consegnaInstallazione.expire, new Date()))}
+                                        {handleTargetLabel(props.orderData.activity.consegnaInstallazione.expire, props.orderData.activity.consegnaInstallazione.completed)}
                                     </td>
                                     <td>
                                         <div>
                                             {props?.orderData?.activity?.consegnaInstallazione?.note?.trim() !== '' ?
-                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_consegnaInstallazione') as HTMLDialogElement | null)?.showModal()} size={32} /> :
-                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_consegnaInstallazione') as HTMLDialogElement | null)?.showModal()} size={32} />
+                                                <IoIosMail className='cursor-pointer' onClick={() => (document.getElementById('modal_consegnaInstallazione_' + props.orderData._id) as HTMLDialogElement | null)?.showModal()} size={32} /> :
+                                                <IoMailOutline className='cursor-pointer' onClick={() => (document.getElementById('modal_consegnaInstallazione_' + props.orderData._id) as HTMLDialogElement | null)?.showModal()} size={32} />
                                             }
                                         </div>
                                     </td>
