@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { workers } from '@/utils/enums/workers';
 import axios from 'axios';
 import Order from '../elements/Order';
+import { comma } from 'postcss/lib/list';
 
 type Props = {
     orderData?: Order;
@@ -15,6 +16,7 @@ type Props = {
 
 const AddOrderForm = (props: Props) => {
     // Date states
+    const [ricACCDate, setRicACCDate] = useState(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.ricezioneAccessori.expire!));
     const [ricAllDate, setRicAllDate] = useState(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.ricezioneAlluminio.expire!));
     const [ricVetDate, setVetAllDate] = useState(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.ricezioneVetri.expire!));
     const [taglioDate, setTaglioDate] = useState(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.taglio.expire!));
@@ -29,11 +31,12 @@ const AddOrderForm = (props: Props) => {
     const [orderName, setOrderName] = useState(props.isEdit != true ? "" : props.orderData?.orderName!);
     const [materialShelf, setMaterialShelf] = useState(props.isEdit != true ? "" : props.orderData?.materialShelf!);
     const [urgency, setUrgency] = useState(props.isEdit != true ? "" : props.orderData?.urgency!);
-    const [priority, setPriority] = useState(props.isEdit != true ? "" : props.orderData?.priority);
+    const [accessori, setAccessori] = useState(props.isEdit != true ? "" : props.orderData?.accessori!);
     const [orderManager, setOrderManager] = useState(props.isEdit != true ? "" : props.orderData?.orderManager!);
 
     //Activity states
 
+    const [RACCres, setRACCres] = useState(props.isEdit != true ? "" : props.orderData?.activity.ricezioneAccessori.activityManager!);
     const [RAres, setRAres] = useState(props.isEdit != true ? "" : props.orderData?.activity.ricezioneAlluminio.activityManager!);
     const [RVres, setRVres] = useState(props.isEdit != true ? "" : props.orderData?.activity.ricezioneVetri.activityManager!);
     const [TAGRes, setTAGRes] = useState(props.isEdit != true ? "" : props.orderData?.activity.taglio.activityManager!);
@@ -46,6 +49,7 @@ const AddOrderForm = (props: Props) => {
 
     //Note states
 
+    const [RACCNote, setRACCNote] = useState(props.isEdit != true ? "" : props.orderData?.activity.ricezioneAccessori.note);
     const [RANote, setRANote] = useState(props.isEdit != true ? "" : props.orderData?.activity.ricezioneAlluminio.note);
     const [RVNote, setRVNote] = useState(props.isEdit != true ? "" : props.orderData?.activity.ricezioneVetri.note);
     const [TAGNote, setTAGNote] = useState(props.isEdit != true ? "" : props.orderData?.activity.taglio.note);
@@ -56,8 +60,22 @@ const AddOrderForm = (props: Props) => {
     const [TRANote, setTRANote] = useState(props.isEdit != true ? "" : props.orderData?.activity.trasporto.note);
     const [DELNote, setDELNote] = useState(props.isEdit != true ? "" : props.orderData?.activity.consegnaInstallazione.note);
 
+    //Completed states
+
+    const [RACCCompleted, setRACCCompleted] = useState(props.isEdit != true ? "" : props.orderData?.activity.ricezioneAccessori.completed);
+    const [RACompleted, setRACompleted] = useState(props.isEdit != true ? "" : props.orderData?.activity.ricezioneAlluminio.completed);
+    const [RVCompleted, setRVCompleted] = useState(props.isEdit != true ? "" : props.orderData?.activity.ricezioneVetri.completed);
+    const [TAGCompleted, setTAGCompleted] = useState(props.isEdit != true ? "" : props.orderData?.activity.taglio.completed);
+    const [LAVCompleted, setLAVCompleted] = useState(props.isEdit != true ? "" : props.orderData?.activity.lavorazione.completed);
+    const [ASSCompleted, setASSCompleted] = useState(props.isEdit != true ? "" : props.orderData?.activity.assemblaggio.completed);
+    const [IVCompleted, setIVCompleted] = useState(props.isEdit != true ? "" : props.orderData?.activity.installazioneVetri.completed);
+    const [IMCompleted, setIMCompleted] = useState(props.isEdit != true ? "" : props.orderData?.activity.imballaggio.completed);
+    const [TRACompleted, setTRACompleted] = useState(props.isEdit != true ? "" : props.orderData?.activity.trasporto.completed);
+    const [DELCompleted, setDELCompleted] = useState(props.isEdit != true ? "" : props.orderData?.activity.consegnaInstallazione.completed);
+
     //Status states
 
+    const [RACCstat, setRACCstat] = useState(props.isEdit != true ? "Standby" : props.orderData?.activity.ricezioneAccessori.status);
     const [RAstat, setRAstat] = useState(props.isEdit != true ? "Standby" : props.orderData?.activity.ricezioneAlluminio.status);
     const [RVstat, setRVstat] = useState(props.isEdit != true ? "Standby" : props.orderData?.activity.ricezioneVetri.status);
     const [TAGstat, setTAGstat] = useState(props.isEdit != true ? "Standby" : props.orderData?.activity.taglio.status);
@@ -98,6 +116,7 @@ const AddOrderForm = (props: Props) => {
     };
 
     const resetFields = () => {
+        setRicACCDate(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.ricezioneAccessori.expire!));
         setRicAllDate(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.ricezioneAlluminio.expire!));
         setVetAllDate(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.ricezioneVetri.expire!));
         setTaglioDate(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.taglio.expire!));
@@ -110,7 +129,7 @@ const AddOrderForm = (props: Props) => {
         setOrderName(props.isEdit != true ? "" : props.orderData?.orderName!);
         setMaterialShelf(props.isEdit != true ? "" : props.orderData?.materialShelf!);
         setUrgency(props.isEdit != true ? "" : props.orderData?.urgency!);
-        setPriority(props.isEdit != true ? "" : String(props.orderData?.priority!));
+        setAccessori(props.isEdit != true ? "" : String(props.orderData?.accessori!));
         setOrderManager(props.isEdit != true ? "" : props.orderData?.orderManager!);
         setRAres(props.isEdit != true ? "" : props.orderData?.activity.ricezioneAlluminio.activityManager!);
         setRVres(props.isEdit != true ? "" : props.orderData?.activity.ricezioneVetri.activityManager!);
@@ -126,60 +145,76 @@ const AddOrderForm = (props: Props) => {
     const orderData = {
         orderName: orderName,
         materialShelf: materialShelf,
-        priority: priority,
+        accessori: accessori,
         urgency: urgency,
         orderManager: orderManager,
         activity: {
+            ricezioneAccessori: {
+                expire: ricACCDate,
+                completed: RACCCompleted,
+                status: RACCstat,
+                activityManager: RACCres,
+                note: RACCNote
+            },
             ricezioneAlluminio: {
                 expire: ricAllDate,
+                completed: RACompleted,
                 status: RAstat,
                 activityManager: RAres,
                 note: RANote
             },
             ricezioneVetri: {
                 expire: ricVetDate,
+                completed: RVCompleted,
                 status: RVstat,
                 activityManager: RVres,
                 note: RVNote
             },
             taglio: {
                 expire: taglioDate,
+                completed: TAGCompleted,
                 status: TAGstat,
                 activityManager: TAGRes,
                 note: TAGNote
             },
             lavorazione: {
                 expire: lavorazioneDate,
+                completed: LAVCompleted,
                 status: LAVstat,
                 activityManager: LAVres,
                 note: LAVNote
             },
             assemblaggio: {
                 expire: assemblaggioDate,
+                comma: ASSCompleted,
                 status: ASSstat,
                 activityManager: ASSres,
                 note: ASSNote
             },
             installazioneVetri: {
                 expire: instVetri,
+                completed: IVCompleted,
                 status: IVstat,
                 activityManager: IVres,
                 note: IVNote
             },
             imballaggio: {
                 expire: imballaggioDate,
+                completed: IMCompleted,
                 status: IMstat,
                 activityManager: IMres,
                 note: IMNote
             },
             trasporto: {
                 expire: transportDate,
+                completed: TRACompleted,
                 status: TRAstat,
                 activityManager: TRAres,
                 note: TRANote
             },
             consegnaInstallazione: {
                 expire: delivInstDate,
+                completed: DELCompleted,
                 status: DELstat,
                 activityManager: DELres,
                 note: DELNote
@@ -221,16 +256,9 @@ const AddOrderForm = (props: Props) => {
 
                         <label className="form-control w-full max-w-xs">
                             <div className="label">
-                                <span className="label-text font-semibold text-lg">Cronologico</span>
+                                <span className="label-text font-semibold text-lg">Scaffa accessori</span>
                             </div>
-                            <select value={priority} onChange={e => setPriority(e.target.value)} required className="select select-bordered">
-                                <option value="" disabled hidden className='text-lg'>Seleziona ordine</option>
-                                <option className='text-lg'>1</option>
-                                <option className='text-lg'>2</option>
-                                <option className='text-lg'>3</option>
-                                <option className='text-lg'>4</option>
-                                <option className='text-lg'>5</option>
-                            </select>
+                            <input required value={accessori} onChange={e => setAccessori(e.target.value)} type="text" placeholder="Scaffa..." className="input input-bordered w-full max-w-xs" />
                         </label>
 
                         <label className="form-control w-full max-w-xs">
@@ -263,6 +291,18 @@ const AddOrderForm = (props: Props) => {
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr>
+                                    <td className="md:text-xl">Ric. accessori</td>
+                                    <td className='md:text-xl'>
+                                        <ReactDatePicker showTimeSelect dateFormat='Pp' timeFormat="HH:mm" timeIntervals={15} className='cursor-pointer' calendarClassName="custom-calendar" minDate={new Date()} selected={ricACCDate} onChange={(date: Date) => setRicACCDate(date)} />
+                                    </td>
+                                    <td>
+                                        <select value={RACCres} onChange={e => setRACCres(e.target.value)} required className="select select-xs md:select-md select-bordered">
+                                            <option value="" disabled hidden>Seleziona responsabile</option>
+                                            {workers.map((worker) => (<option key={worker.value} value={worker.value}>{worker.value}</option>))}
+                                        </select>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td className="md:text-xl">Ric. alluminio</td>
                                     <td className='md:text-xl'>

@@ -38,7 +38,7 @@ const Timer: React.FC<TimerProps> = ({ targetDate }) => {
         }
 
         timerComponents.push(
-            <span key={interval}>
+            <span className='font-semibold' key={interval}>
                 {timeLeft[interval]} {interval}{" "}
             </span>
         );
@@ -46,7 +46,7 @@ const Timer: React.FC<TimerProps> = ({ targetDate }) => {
 
     return (
         <div>
-            {timerComponents.length ? timerComponents : <span>--</span>}
+            {timerComponents.length ? timerComponents : <span className='font-medium'>Scaduto</span>}
         </div>
     );
 };

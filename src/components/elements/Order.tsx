@@ -14,6 +14,7 @@ import axios from 'axios';
 interface Order {
     activity: {
         [key: string]: Activity;
+        ricezioneAccessori: Activity;
         ricezioneAlluminio: Activity;
         ricezioneVetri: Activity;
         taglio: Activity;
@@ -27,7 +28,7 @@ interface Order {
     _id: string;
     orderName: string;
     materialShelf: string;
-    priority: number;
+    accessori: string;
     urgency: string;
     orderManager: string;
     note?: string;
@@ -38,7 +39,7 @@ interface Activity {
     expire: string;
     status: string;
     note: string;
-    completed: string | null;
+    completed: string;
     activityManager: string;
 }
 
@@ -48,6 +49,7 @@ type Props = {
 
 const Order = (props: Props) => {
 
+    const [RACCstat, setRACCstat] = useState(props.orderData.activity.ricezioneAccessori.status);
     const [RAstat, setRAstat] = useState(props.orderData.activity.ricezioneAlluminio.status);
     const [RVstat, setRVstat] = useState(props.orderData.activity.ricezioneVetri.status);
     const [TAGstat, setTAGstat] = useState(props.orderData.activity.taglio.status);
@@ -74,6 +76,17 @@ const Order = (props: Props) => {
     }
 
 
+    const handleChangeRACCstat = (event: { target: any }) => {
+        if (event.target.value === 'Completato') {
+            completeActivity(props.orderData._id, 'ricezioneAccessori')
+            changeStatus(props.orderData._id, 'ricezioneAccessori', event.target.value)
+            setRACCstat(event.target.value);
+            window.location.reload();
+        } else {
+            changeStatus(props.orderData._id, 'ricezioneAccessori', event.target.value)
+            setRACCstat(event.target.value);
+        }
+    };
     const handleChangeRAstat = (event: { target: any }) => {
         if (event.target.value === 'Completato') {
             completeActivity(props.orderData._id, 'ricezioneAlluminio')
@@ -208,6 +221,7 @@ const Order = (props: Props) => {
     return (
         <>
             <ToastContainer style={{ zIndex: 9999 }} autoClose={3000} pauseOnHover={false} toastClassName={"z-10"} limit={1} />
+            <NoteModal note={props.orderData.activity.ricezioneAccessori.note} id={props.orderData._id} label='Ricezione accessori' activity='ricezioneAccessori' />
             <NoteModal note={props.orderData.activity.ricezioneAlluminio.note} id={props.orderData._id} label='Ricezione alluminio' activity='ricezioneAlluminio' />
             <NoteModal note={props.orderData.activity.ricezioneVetri.note} id={props.orderData._id} label='Ricezione vetri' activity='ricezioneVetri' />
             <NoteModal note={props.orderData.activity.taglio.note} id={props.orderData._id} label='Taglio' activity='taglio' />
@@ -229,8 +243,12 @@ const Order = (props: Props) => {
                         <p className=' text-center text-lg'>{props.orderData.urgency}</p>
                     </div>
                     <div>
-                        <p className='font-bold'>Cronologico</p>
-                        <p className=' text-center text-lg'>{props.orderData.priority}</p>
+                        <p className='font-bold'>Responsabile</p>
+                        <p className=' text-center text-lg'>{props.orderData.orderManager}</p>
+                    </div>
+                    <div>
+                        <p className='font-bold'>Scaffa accessori</p>
+                        <p className=' text-center text-lg'>{props.orderData.accessori}</p>
                     </div>
                     <div>
                         <p className='font-bold'>Scaffa materiale</p>
@@ -243,6 +261,7 @@ const Order = (props: Props) => {
                             <thead>
                                 <tr className='text-lg font-bold text-center'>
                                     <th>Attività</th>
+                                    <th>Resp.</th>
                                     <th>Scadenza</th>
                                     <th>Completato</th>
                                     <th>Stato</th>
@@ -255,7 +274,31 @@ const Order = (props: Props) => {
 
 
                                 <tr className='hover:bg-slate-300  border-b-2 border-black'>
+                                    <td className="font-semibold">Ricezione Accessori</td>
+                                    <td>{props.orderData.activity.ricezioneAccessori.activityManager}</td>
+                                    <td>{new Date(props.orderData.activity.ricezioneAccessori.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
+                                    <td>{props.orderData.activity.ricezioneAccessori.completed ? new Date(props.orderData.activity.ricezioneAccessori.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : '--'}</td>
+                                    <td>
+                                        <select disabled={RACCstat === 'Completato' ? true : false} className='select select-bordered w-full max-w-xs' value={RACCstat} onChange={handleChangeRACCstat}>
+                                            <option className={`${RACCstat != "Standby" ? "hidden" : ""}`} value={"Standby"}>Standby</option>
+                                            {status.map((status, index) => (
+                                                <option key={index} value={status.value}>{status.label}</option>
+                                            ))}
+                                        </select>
+                                    </td>
+                                    <td>{handleTargetLabel(props.orderData.activity.ricezioneAccessori.expire, props.orderData.activity.ricezioneAccessori.completed)}</td>
+                                    <td>
+                                        <div>
+                                            {props?.orderData?.activity?.ricezioneAccessori?.note?.trim() !== '' ?
+                                                <IoIosMail className='cursor-pointer' onClick={() => { (document.getElementById('modal_ricezioneAccessori_' + props.orderData._id) as HTMLDialogElement | null)?.showModal(); }} size={32} /> :
+                                                <IoMailOutline className='cursor-pointer' onClick={() => { (document.getElementById('modal_ricezioneAccessori_' + props.orderData._id) as HTMLDialogElement | null)?.showModal(); }} size={32} />}
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr className='hover:bg-slate-300  border-b-2 border-black'>
                                     <td className="font-semibold">Ricezione Alluminio</td>
+                                    <td>{props.orderData.activity.ricezioneAlluminio.activityManager}</td>
                                     <td>{new Date(props.orderData.activity.ricezioneAlluminio.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
                                     <td>{props.orderData.activity.ricezioneAlluminio.completed ? new Date(props.orderData.activity.ricezioneAlluminio.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : '--'}</td>
                                     <td>
@@ -282,6 +325,7 @@ const Order = (props: Props) => {
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black'>
                                     <td className="font-semibold">Ricezione vetri</td>
+                                    <td>{props.orderData.activity.ricezioneVetri.activityManager}</td>
                                     <td>{new Date(props.orderData.activity.ricezioneVetri.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
                                     <td>{props.orderData.activity.ricezioneVetri.completed ? new Date(props.orderData.activity.ricezioneVetri.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
@@ -308,6 +352,7 @@ const Order = (props: Props) => {
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black'>
                                     <td className="font-semibold">Taglio</td>
+                                    <td>{props.orderData.activity.taglio.activityManager}</td>
                                     <td>{new Date(props.orderData.activity.taglio.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
                                     <td>{props.orderData.activity.taglio.completed ? new Date(props.orderData.activity.taglio.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
@@ -332,6 +377,7 @@ const Order = (props: Props) => {
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black '>
                                     <td className="font-semibold">Lavorazione</td>
+                                    <td>{props.orderData.activity.lavorazione.activityManager}</td>
                                     <td>{new Date(props.orderData.activity.lavorazione.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
                                     <td>{props.orderData.activity.lavorazione.completed ? new Date(props.orderData.activity.lavorazione.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
@@ -356,6 +402,7 @@ const Order = (props: Props) => {
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black '>
                                     <td className="font-semibold">Assemblaggio</td>
+                                    <td>{props.orderData.activity.assemblaggio.activityManager}</td>
                                     <td>{new Date(props.orderData.activity.assemblaggio.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
                                     <td>{props.orderData.activity.assemblaggio.completed ? new Date(props.orderData.activity.assemblaggio.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
@@ -381,6 +428,7 @@ const Order = (props: Props) => {
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black '>
                                     <td className="font-semibold">Installazione vetri</td>
+                                    <td>{props.orderData.activity.installazioneVetri.activityManager}</td>
                                     <td>{new Date(props.orderData.activity.installazioneVetri.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
                                     <td>{props.orderData.activity.installazioneVetri.completed ? new Date(props.orderData.activity.installazioneVetri.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
@@ -407,6 +455,7 @@ const Order = (props: Props) => {
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black'>
                                     <td className="font-semibold">Imballaggio</td>
+                                    <td>{props.orderData.activity.imballaggio.activityManager}</td>
                                     <td>{new Date(props.orderData.activity.imballaggio.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
                                     <td>{props.orderData.activity.imballaggio.completed ? new Date(props.orderData.activity.imballaggio.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
@@ -432,6 +481,7 @@ const Order = (props: Props) => {
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black '>
                                     <td className="font-semibold">Trasporto</td>
+                                    <td>{props.orderData.activity.trasporto.activityManager}</td>
                                     <td>{new Date(props.orderData.activity.trasporto.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
                                     <td>{props.orderData.activity.trasporto.completed ? new Date(props.orderData.activity.trasporto.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
@@ -457,6 +507,7 @@ const Order = (props: Props) => {
 
                                 <tr className='hover:bg-slate-300 border-b-2 border-black '>
                                     <td className="font-semibold">Consegna/Install.</td>
+                                    <td>{props.orderData.activity.consegnaInstallazione.activityManager}</td>
                                     <td>{new Date(props.orderData.activity.consegnaInstallazione.expire).toLocaleDateString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</td>
                                     <td>{props.orderData.activity.consegnaInstallazione.completed ? new Date(props.orderData.activity.consegnaInstallazione.completed).toLocaleString('it-IT', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "--"}</td>
                                     <td>
@@ -487,7 +538,7 @@ const Order = (props: Props) => {
                 </div>
                 <div className='flex justify-between items-center center my-4'>
                     <Progress progressValue={getCompletedActivitiesCount(props.orderData)} />
-                    <button disabled={getCompletedActivitiesCount(props.orderData) >= 9 ? false : true} onClick={() => archiveOrder()} className={`btn btn-success rounded-lg w-1/4 shadow-xl`}>Archivia</button>
+                    <button disabled={getCompletedActivitiesCount(props.orderData) >= 10 ? false : true} onClick={() => archiveOrder()} className={`btn btn-success rounded-lg w-1/4 shadow-xl`}>Archivia</button>
                 </div>
             </div>
         </>
