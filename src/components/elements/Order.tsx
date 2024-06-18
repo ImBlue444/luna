@@ -7,7 +7,7 @@ import { differenceInMinutes } from "date-fns";
 import Timer from './Timer';
 import NoteModal from './NoteModal';
 import { changeStatus, completeActivity } from '@/utils/libs/crud';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import Progress from './OrderElements/Progress';
 import axios from 'axios';
 
@@ -60,6 +60,10 @@ const Order = (props: Props) => {
     const [TRAstat, setTRAstat] = useState(props.orderData.activity.trasporto.status);
     const [DELstat, setDELstat] = useState(props.orderData.activity.consegnaInstallazione.status);
 
+    const notifySuccess = (text: string) => toast.success(text);
+    const notifyError = (text: string) => toast.error(text);
+
+
 
     const getCompletedActivitiesCount = (orderData: Order): number => {
         let completedCount = 0;
@@ -73,6 +77,17 @@ const Order = (props: Props) => {
 
     const archiveOrder = () => {
         axios.post(`${process.env.NEXT_PUBLIC_LUNA_BASE_URL}/archive/${props.orderData._id}`)
+            .then(function (response) {
+                if (response.status === 200 || 201) {
+                    notifySuccess('Commessa archiviata con successo');
+                }
+                else {
+                    notifyError('Qualcosa è andato storto, riprova più tardi');
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
 

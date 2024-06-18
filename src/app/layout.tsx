@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html id="root" lang="en">
       <GlobalProvider>
-        <body className={inter.className}><Sidebar />{children}<Footer /></body>
+        <body className={inter.className}><div className="flex flex-col min-h-screen"><Sidebar />{children}<Footer /></div></body>
       </GlobalProvider>
     </html>
   );

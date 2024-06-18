@@ -9,7 +9,7 @@
 .custom-calendar .react-datepicker__day,
 .custom-calendar .react-datepicker__day-name,
 .custom-calendar .react-datepicker__time-name {
-  width: 1.2em; /* Aumenta la larghezza dei giorni */
+  width: 1.5em; /* Aumenta la larghezza dei giorni */
   line-height: 1.2em; /* Aumenta l'altezza dei giorni */
   font-size: 1.2em; /* Ingrandisce il testo dei giorni */
 }
