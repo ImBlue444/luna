@@ -45,6 +45,7 @@ interface Activity {
 
 type Props = {
     orderData: Order
+    isArchived?: boolean
 }
 
 const Order = (props: Props) => {
@@ -66,6 +67,9 @@ const Order = (props: Props) => {
 
 
     const getCompletedActivitiesCount = (orderData: Order): number => {
+        if (props.isArchived) {
+            return 0;
+        }
         let completedCount = 0;
         Object.values(orderData.activity).forEach((activity) => {
             if (activity.completed && new Date(activity.completed) instanceof Date && !isNaN(new Date(activity.completed).getTime())) {
@@ -553,7 +557,7 @@ const Order = (props: Props) => {
                 </div>
                 <div className='flex justify-between items-center center my-4'>
                     <Progress progressValue={getCompletedActivitiesCount(props.orderData)} />
-                    <button disabled={getCompletedActivitiesCount(props.orderData) >= 10 ? false : true} onClick={() => archiveOrder()} className={`btn btn-success rounded-lg w-1/4 shadow-xl`}>Archivia</button>
+                    <button disabled={getCompletedActivitiesCount(props.orderData) >= 10 ? false : true} onClick={() => archiveOrder()} className={`btn ${props.isArchived ? 'btn-disabled' : ''}btn-success rounded-lg w-1/4 shadow-xl`}>{props.isArchived ? "Archiviato" : "Archivia"}</button>
                 </div>
             </div>
         </>

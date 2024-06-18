@@ -1,6 +1,7 @@
 'use client'
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
 
 interface Order {
     activity: {
@@ -32,7 +33,8 @@ interface Activity {
     activityManager: string;
 }
 
-type Props = {}
+type Props = {
+}
 
 const ArchiveTable = (props: Props) => {
     const [archive, setArchive] = useState([])
@@ -51,18 +53,18 @@ const ArchiveTable = (props: Props) => {
             <table className="table">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Nome ordine</th>
                         <th>Responsabile</th>
-                        <th>Priorità</th>
                         <th>Urgenza</th>
                     </tr>
                 </thead>
                 <tbody>
                     {archive && archive.map((order: Order) => (
                         <tr key={order._id}>
-                            <td>{order.orderName}</td>
+                            <td></td>
+                            <td className='font-bold'><Link href={`/archivio/${order._id}`}>{order.orderName}</Link></td>
                             <td>{order.orderManager}</td>
-                            <td>{order.priority}</td>
                             <td>{order.urgency}</td>
                         </tr>
                     ))}

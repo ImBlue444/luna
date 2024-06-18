@@ -36,7 +36,7 @@ interface Activity {
 }
 
 const OrdersList = () => {
-    const [orders, setOrders] = useState<Orders[]>([]);
+    const [orders, setOrders] = useState<Order[]>([]);
 
     useEffect(() => {
         fetchOrders();
@@ -59,7 +59,7 @@ const OrdersList = () => {
     return (
         <div>
             <div className='flex flex-col gap-7 mt-4'>
-                {orders.map((order, index) => <div key={index}><Order orderData={order} /></div>)}
+                {orders.length >= 1 ? orders.map((order, index) => <div key={index}><Order orderData={order} /></div>) : <div className='text-center italic'>Nessun ordine presente</div>}
             </div>
         </div>
     );

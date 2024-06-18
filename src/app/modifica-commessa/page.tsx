@@ -36,7 +36,7 @@ const Page = (props: Props) => {
     if (isLoading) {
         return (<div className="flex justify-center"><span className="loading loading-bars loading-lg"></span></div>)
     } else {
-        return (<div><AdminOrderList ordersData={ordersData} /></div>)
+        return (<div>{ordersData.length >= 1 ? <AdminOrderList ordersData={ordersData} /> : <div className='text-center italic'>Nessun ordine presente</div>}</div>)
     };
 }
 
