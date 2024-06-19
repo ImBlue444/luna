@@ -33,6 +33,6 @@ export default function Page({ params }: { params: { id: string } }) {
     if (isLoading) {
         return (<div className="flex justify-center"><span className="loading loading-bars loading-lg"></span></div>)
     } else {
-        return (orderData && <Order isArchived={true} orderData={orderData[0]} />)
+        return (orderData && <Order orderData={orderData} />)
     };
 }
