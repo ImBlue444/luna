@@ -9,6 +9,7 @@ import axios from 'axios';
 import Order from '../elements/Order';
 import { registerLocale } from 'react-datepicker';
 import { it } from 'date-fns/locale';
+import { useRouter } from 'next/navigation';
 registerLocale('it', it);
 
 type Props = {
@@ -91,6 +92,8 @@ const AddOrderForm = (props: Props) => {
     const notifySuccess = (text: string) => toast.success(text);
     const notifyError = (text: string) => toast.error(text);
 
+    const router = useRouter();
+
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (props.isEdit) {
@@ -116,6 +119,21 @@ const AddOrderForm = (props: Props) => {
                 console.log(error);
             });
     };
+
+    const handleDelete = () => {
+        if (props.isEdit) {
+            axios.delete(`${process.env.NEXT_PUBLIC_LUNA_BASE_URL}/orders/${props.orderData?._id}`)
+                .then(function (response) {
+                    if (response.status === 200) {
+                        router.replace("/orders");
+                    } else notifyError("Qualcosa è andato storto!")
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            return;
+        }
+    }
 
     const resetFields = () => {
         setRicACCDate(props.isEdit != true ? new Date() : new Date(props.orderData?.activity.ricezioneAccessori.expire!));
@@ -228,6 +246,22 @@ const AddOrderForm = (props: Props) => {
     return (
         <div>
             <ToastContainer limit={1} />
+            {/* //Modal */}
+            <dialog id="my_modal_1" className="modal">
+                <div className="modal-box">
+                    <h3 className="font-bold text-lg">Hello!</h3>
+                    <p className="py-4">Sicuro di voler eliminare la commessa?</p>
+                    <div className="modal-action">
+                        <form method="dialog">
+                            <div className='flex gap-4'>
+                                <button className="btn">Annulla</button>
+                                <button onClick={() => handleDelete()} className="btn btn-error">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
+
             <form onSubmit={handleSubmit} >
                 <div className=' m-4'>
                     <div className='flex justify-center'>
@@ -636,7 +670,16 @@ const AddOrderForm = (props: Props) => {
                         props.isEdit ? <button type='submit' className='btn btn-info btn-lg rounded-xl'>Modifica</button> :
                             <button type='submit' className='btn btn-success btn-lg rounded-xl'>Aggiungi</button>
                     }
-
+                    {
+                        props.isEdit ? <p className="btn btn-error btn-lg rounded-xl" onClick={() => {
+                            const modalElement = document.getElementById('my_modal_1') as HTMLDialogElement;
+                            if (modalElement) {
+                                modalElement.showModal();
+                            } else {
+                                console.error('Modal element not found');
+                            }
+                        }}>Elimina</p> : null
+                    }
                 </div>
             </form>
         </div>

@@ -10,6 +10,9 @@ import { changeStatus, completeActivity } from '@/utils/libs/crud';
 import { toast, ToastContainer } from 'react-toastify';
 import Progress from './OrderElements/Progress';
 import axios from 'axios';
+import { usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+
 
 interface Order {
     activity: {
@@ -49,6 +52,7 @@ type Props = {
 }
 
 const Order = (props: Props) => {
+    const pathName = usePathname();
 
     const [RACCstat, setRACCstat] = useState(props.orderData.activity.ricezioneAccessori.status);
     const [RAstat, setRAstat] = useState(props.orderData.activity.ricezioneAlluminio.status);
@@ -64,7 +68,7 @@ const Order = (props: Props) => {
     const notifySuccess = (text: string) => toast.success(text);
     const notifyError = (text: string) => toast.error(text);
 
-
+    const router = useRouter();
 
     const getCompletedActivitiesCount = (orderData: Order): number => {
         if (props.isArchived) {
@@ -236,6 +240,20 @@ const Order = (props: Props) => {
         }
     };
 
+    const handleDelete = () => {
+        if (pathName.includes('archivio')) {
+            axios.delete(`${process.env.NEXT_PUBLIC_LUNA_BASE_URL}/archive/${props.orderData?._id}`)
+                .then(function (response) {
+                    if (response.status === 200) {
+                        router.replace("/archivio");
+                    } else notifyError("Qualcosa è andato storto!")
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            return;
+        }
+    }
 
     return (
         <>
@@ -250,6 +268,21 @@ const Order = (props: Props) => {
             <NoteModal note={props.orderData.activity.imballaggio.note} id={props.orderData._id} label='Imballaggio' activity='imballaggio' />
             <NoteModal note={props.orderData.activity.trasporto.note} id={props.orderData._id} label='Trasporto' activity='trasporto' />
             <NoteModal note={props.orderData.activity.consegnaInstallazione.note} id={props.orderData._id} label='Consegna e/o installazione' activity='consegnaInstallazione' />
+
+            <dialog id="my_modal_1" className="modal">
+                <div className="modal-box">
+                    <h3 className="font-bold text-lg">Hello!</h3>
+                    <p className="py-4">Sicuro di voler eliminare la commessa?</p>
+                    <div className="modal-action">
+                        <form method="dialog">
+                            <div className='flex gap-4'>
+                                <button className="btn">Annulla</button>
+                                <button onClick={() => handleDelete()} className="btn btn-error">Elimina</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
 
             <div className=' card my-2 py-2 px-6 mx-6 rounded-xl md:text-lg bg-slate-100 border border-black'>
                 <div className={`flex flex-col md:flex-row items-center md:justify-between text-center gap-4 mb-8 rounded-xl p-4 border-4 ${handleUrgency()}`}>
@@ -555,10 +588,22 @@ const Order = (props: Props) => {
                 </div>
                 <div>
                 </div>
-                <div className='flex justify-between items-center center my-4'>
-                    <Progress progressValue={getCompletedActivitiesCount(props.orderData)} />
-                    <button disabled={getCompletedActivitiesCount(props.orderData) >= 10 ? false : true} onClick={() => archiveOrder()} className={`btn ${props.isArchived ? 'btn-disabled' : ''}btn-success rounded-lg w-1/4 shadow-xl`}>{props.isArchived ? "Archiviato" : "Archivia"}</button>
-                </div>
+                {pathName.includes('archivio') ? null :
+                    <div className='flex justify-between items-center center my-4'>
+                        <Progress progressValue={getCompletedActivitiesCount(props.orderData)} />
+                        <button disabled={getCompletedActivitiesCount(props.orderData) >= 10 ? false : true} onClick={() => archiveOrder()} className={`btn ${props.isArchived ? 'btn-disabled' : ''}btn-success rounded-lg w-1/4 shadow-xl`}>{props.isArchived ? "Archiviato" : "Archivia"}</button>
+                    </div>
+                }
+                {
+                    pathName.includes('archivio') ? <div className='flex justify-center my-2'><p className="btn btn-error btn-lg rounded-xl w-32" onClick={() => {
+                        const modalElement = document.getElementById('my_modal_1') as HTMLDialogElement;
+                        if (modalElement) {
+                            modalElement.showModal();
+                        } else {
+                            console.error('Modal element not found');
+                        }
+                    }}>Elimina</p></div> : null
+                }
             </div>
         </>
     )
