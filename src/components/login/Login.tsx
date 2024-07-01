@@ -19,7 +19,7 @@ const Login = (props: Props) => {
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_LUNA_BASE_URL}/users`, { role, password });
+            const response = await axios.post(`/users`, { role, password });
             const token = response?.data?.token;
             if (token) {
                 localStorage.setItem('token', token);
