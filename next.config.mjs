@@ -3,7 +3,7 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: "/https://luna-be.vercel.app/:path*",
+        source: "/:path*",
         headers: [
           {
             key: "Access-Control-Allow-Origin",
