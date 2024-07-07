@@ -30,14 +30,13 @@ const Sidebar = (props: Props) => {
                                 </label>
                             </div>
                             <div className="flex-1 items-center">
-                                <Link href={"/orders"} className="btn btn-ghost text-xl rounded-lg">Luna <Image src={logo} alt='logo' width={80} /></Link>
+                                <Link href={"/orders"} className="btn btn-ghost text-xl rounded-lg">Home <Image src={logo} alt='logo' width={80} /></Link>
 
                             </div>
                             {pathName === "/login" ? "" :
                                 <div className="flex-none hidden lg:block">
                                     <ul className="menu menu-horizontal">
                                         {/* Navbar menu content here */}
-                                        <li><Link href={"/orders"}>Supporto</Link></li>
                                         <li><p onClick={() => handleExit()}>Esci</p></li>
                                     </ul>
                                 </div>
@@ -49,7 +48,6 @@ const Sidebar = (props: Props) => {
                             <label htmlFor="my-drawer-3" aria-label="close sidebar" className="drawer-overlay"></label>
                             <ul className="menu p-4 w-80 min-h-full bg-slate-200">
                                 {/* Sidebar content here */}
-                                <li><Link href={"/orders"}>Supporto</Link></li>
                                 <li><p className='link' onClick={() => handleExit()}>Esci</p></li>
                             </ul>
                         </div>

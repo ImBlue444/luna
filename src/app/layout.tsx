@@ -8,7 +8,7 @@ import { GlobalProvider } from "@/components/Context/GlobalContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Luna manager",
+  title: "Alminfissi",
   description: "Developed by Dennis Badagliacca",
 };
 
